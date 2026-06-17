@@ -1,17 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import type { Recipe, RecipeDetails } from '../types'
 
-// function App() {
-
-//   return (
-//     <>
-//     <h1>TEST</h1>
-//         <p>
-//             Oto strona główna.
-//         </p>
-//     </>
-//   )
-// }
 
 const Recipes: React.FC = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -21,7 +10,7 @@ const Recipes: React.FC = () => {
   const [recipeDetails, setRecipeDetails] = useState<RecipeDetails|null>(null);
   //const 
 
-  //const selectedRecipe = recipes.find(r => r.id === openedDetails);
+  const selectedRecipe = recipes.find(r => r.id === openedDetails);
 
   const recipeFields = [
     { key: "moves", label: "Moves", type: "number" },
@@ -74,6 +63,36 @@ const Recipes: React.FC = () => {
     }).catch(err => {
       alert('Wystąpił błąd podczas zapisu danych do bazy');
     })
+  }
+
+  const handleDelete = () => {
+    if (openedDetails === null || !recipeDetails) return;
+    const confirm = window.confirm('Czy na pewno chcesz usunąć tę recepturę?')
+    if (!confirm){
+      return;
+    }
+    fetch(`http://localhost:8080/recipe/${openedDetails}`, {
+      method: 'DELETE'
+    }).then(res => res.json()).then(data => alert(data.message))
+    setRecipes(prev => prev.filter(r => r.id !== openedDetails));
+    setOpenedDetails(null);
+    setRecipeDetails(null);
+  }
+
+  const handleInsert = () => {
+    if (openedDetails === null || !recipeDetails) return;
+    const confirm = window.confirm('Czy na pewno chcesz utworzyć nową recepturę na bazie wybranej?')
+    if (!confirm){
+      return;
+    }
+    fetch('http://localhost:8080/recipes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(recipeDetails)
+    }).then(res => res.json())
+    setRecipes(prev => prev.filter(r => r.id !== openedDetails));
+    setOpenedDetails(null);
+    setRecipeDetails(null);
   }
 
   useEffect(() => {
@@ -144,14 +163,18 @@ const Recipes: React.FC = () => {
         </tbody>
       </table>
     )}
-    {openedDetails !== null && (
+    {openedDetails !== null && selectedRecipe && (
       <div className='recipeDetails'>
         <div className='detailsHeader'>
-          {/* <h3>Szczegóły receptury o id: {openedDetails}</h3> */}
-          <label>{recipes[openedDetails-1].id}</label>
-          <label>{recipes[openedDetails-1].Machine_id}</label>
-          <label>{recipes[openedDetails-1].name}</label>
+          <label>{selectedRecipe.id}</label>
+          <label>{selectedRecipe.Machine_id}</label>
+          <label>{selectedRecipe.name}</label>
           <button onClick={handleSave} style={{backgroundColor: '#295338'}}>Zapisz zmiany</button>
+
+          {/* WAY OF INSERTING NEW RECIPE PROBABLY TO BE CHANGED */}
+          <button onClick={handleInsert} style={{backgroundColor: '#293f53'}}>Skopiuj recepturę</button>
+
+          <button onClick={handleDelete} style={{backgroundColor: '#5c2727'}}>Usuń recepturę</button>
           <button onClick={() => setOpenedDetails(null)}>Zamknij</button>
         </div>
         <div className='detailsContent'>
@@ -164,8 +187,8 @@ const Recipes: React.FC = () => {
             </div>)))}
         </div>
         <div className='detailsLastMod'>
-          <label>ZMODYFIKOWANE PRZEZ: {recipes[openedDetails-1].fname} {recipes[openedDetails-1].sname}</label>
-          <label>{new Date(recipes[openedDetails-1].timestart).toLocaleString('pl-PL')}</label>
+          <label>ZMODYFIKOWANE PRZEZ: {selectedRecipe.fname} {selectedRecipe.sname}</label>
+          <label>{new Date(selectedRecipe.timestart).toLocaleString('pl-PL')}</label>
         </div>
       </div>
     )}

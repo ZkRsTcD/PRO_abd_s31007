@@ -13,13 +13,6 @@ app = FastAPI()
 #     "Trusted_Connection=yes;"
 # )
 
-# connection_string = (
-#     "Driver={ODBC Driver 17 for SQL Server};"
-#     "Server=db;"
-#     "Database=TestPRO;"
-#     "UID=sa;"
-#     "PWD=Haslo4!;"
-# )
 
 db_server = os.getenv("DB_SERVER", "db")
 db_name = os.getenv("DB_NAME", "TestPRO")
@@ -97,31 +90,55 @@ def update_recipe_details(recipe_id: int, details: dict = Body(...)):
     finally:
         cursor.close()
         connection.close()
-    
-        
 
+@app.delete("/recipe/{recipe_id}")
+def delete_recipe(recipe_id: int):
+    connection = pyodbc.connect(connection_string)
+    cursor = connection.cursor()
+    try:
+        cursor.execute("SELECT id FROM Recipe WHERE id = ?", recipe_id)
+        if cursor.fetchone() is None:
+            return {"error": "Nie istnieje taka receptura"}
+        cursor.execute("DELETE FROM Recipe WHERE id = ?", recipe_id)
+        connection.commit()
+        return {"status": "success", "message": "Receptura została usunięta"}
+    except Exception as e:
+        connection.rollback()
+        return {"error": "Błąd usuwania rekordu z bazy danych"}
+    finally:
+        cursor.close()
+        connection.close()
 
+@app.post("/recipes")
+def create_recipe(details: dict = Body(...)):
+    connection = pyodbc.connect(connection_string)
+    cursor = connection.cursor()
+    try:
+        ignored_keys = {'id', 'Source', 'Machine_id', 'timestart', 'User_id', 'name'}
+        fields_to_insert = {k: v for k, v in details.items() if k not in ignored_keys}
+        fields_to_insert['timestart'] = datetime.datetime.now()     #PO STRONIE BAZY?
+        fields_to_insert['Source'] = 2                              #TEMPORARY
+        fields_to_insert['Machine_id'] = 1                          #TEMPORARY
+        fields_to_insert['User_id'] = 1                             #TEMPORARY
+        fields_to_insert['name'] = 'InsertedSAMPLE'                 #TEMPORARY
+        cursor.execute("SELECT MAX(id) + 1 FROM Recipe")
+        row = cursor.fetchone()
+        new_id = row[0] if row is not None else 1
+        fields_to_insert['id'] = new_id                             #PO STRONIE BAZY?
+        columns = ", ".join(fields_to_insert.keys())
+        placeholders = ", ".join(["?" for _ in fields_to_insert])
+        sql_query = f"INSERT INTO Recipe ({columns}) VALUES ({placeholders})"
+        cursor.execute(sql_query, list(fields_to_insert.values()))
+        connection.commit()
+        return {"status": "success", "message": "Receptura została dodana"}
+    except:
+        connection.rollback()
+        return {"error": "Błąd dodawania rekordu do bazy"}
+    finally:
+        cursor.close()
+        connection.close()
 
-# @app.get("/user/name/{user_id}")
-# def get_users_name(user_id: int):
-#     connection = pyodbc.connect(connection_string)
-#     cursor = connection.cursor()
-#     try:
-#         cursor.execute("SELECT fname, sname FROM [User] WHERE id = ?", user_id)
-#         row = cursor.fetchone()
-#         if row is None:
-#             return {"error": "Brak usera"}
-#         return {
-#             "fname": row[0],
-#             "sname": row[1]
-#         }
-#     finally:
-#         cursor.close()
-#         connection.close()
-        
-    
-
-        
+      
 
 
 

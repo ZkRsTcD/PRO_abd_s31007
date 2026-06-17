@@ -1,10 +1,3 @@
-// export interface Recipe {
-//     id: number;
-//     Machine_id: number;
-//     timestart: string; //Dates comes through JSON as strings
-//     User_id: number;
-//     name: string;
-// }
 
 export interface Recipe {
     id: number;
@@ -54,8 +47,3 @@ export interface RecipeDetails{
     optCarbon: number;
     optCoreless: number;
 }
-
-// export interface UserName {
-//     fname: string;
-//     sname: string;
-// }
