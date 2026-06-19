@@ -1,18 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import Recipes from './components/Recipes.js'
+import Recipes from '../recipes/components/Recipes'
 import './App.css'
 
-// function App() {
-
-//   return (
-//     <>
-//     <h1>TEST</h1>
-//         <p>
-//             Oto strona główna. Po lewej wszystkie nasze funkcjonalności.
-//         </p>
-//     </>
-//   )
-// }
 
 const App: React.FC = () => {
   const [currentModule, setCurrentModule] = useState<string>();
