@@ -14,6 +14,12 @@ body{
   height: 100%;
   width: 100%;
   /* overflow: hidden; */
+  .languageSelection{
+    button{
+      background-color: #241a7900;
+      
+    }
+  }
 }
 
 button{

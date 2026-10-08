@@ -1,7 +1,10 @@
 import pyodbc
 import datetime
+from typing import Optional
 
-from src.main import connection_string
+#from src.main import connection_string
+from database import connection_string
+#from pyodbc import .......
 
 
 
@@ -23,8 +26,20 @@ class RecipeRepository:
             cursor.close()
             connection.close()
 
-    def get_by_id():
-        return 
+    def get_by_id(self, recipe_id: int) -> Optional[dict]:
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        try:
+            cursor.execute("SELECT * FROM Recipe WHERE id = ?", recipe_id)
+            row = cursor.fetchone()
+            if row is None:
+                return None
+            columns = [column[0] for column in cursor.description]
+            recipe = dict(zip(columns, tuple(row)))
+            return recipe
+        finally:
+            cursor.close()
+            connection.close()
     
     def update(self, recipe_id: int, fields: dict) -> bool:
         connection = self.get_connection()
