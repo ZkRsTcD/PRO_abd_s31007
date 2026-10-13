@@ -10,6 +10,7 @@ src_dir = Path(__file__).resolve().parent
 
 
 from recipes.router import router as recipes_router
+from settings.router import router as settings_router
 
 
 app = FastAPI()
@@ -49,6 +50,7 @@ app.add_middleware(
 
 
 app.include_router(recipes_router, tags=["Receptury"])
+app.include_router(settings_router, tags=["Ustawienia"])
 
 
 

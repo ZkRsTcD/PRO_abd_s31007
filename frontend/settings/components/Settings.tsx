@@ -1,16 +1,36 @@
 import React from "react";
 import SettingsUsers from "./SettingsUsers"
+import { useSettings } from "../useSettings";
 
 
 const Settings: React.FC = () => {
+    const {
+        users,
+        loadingUsers,
+        roles,
+        loadingRoles,
+        menu,
+        usersError,
+        rolesError,
+        loadUsers,
+        loadRoles
+        //
+        //
+        //
+        //
+    } = useSettings();
 
 
     return (
         <div className="Settings">
             <h1>Ustawienia</h1>
             <div className="UserSettings">
-
-                {/* <SettingsUsers accounts={} roleAffiliation={} passwordChange={} personalDataChange={}/> */}
+                {loadingUsers && <p>Trwa pobieranie danych o użytkownikach z bazy...</p>}
+                {usersError && <p>Błąd połączenia: {usersError}</p>}
+                {!loadingUsers && !usersError && (
+                    <SettingsUsers users={users} />     //Info o błędach i ładowaniu do przeniesienia wewnątrz samej listy
+                )}
+                {/* <SettingsUsers accounts={users} roleAffiliation={} passwordChange={} personalDataChange={}/> */}
             </div>
 
         </div>

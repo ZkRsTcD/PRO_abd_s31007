@@ -1,14 +1,14 @@
 import React from "react";
-import type { Account } from '../typesSettings'
+import type { User } from '../typesSettings'
 
 interface UsersTableProps {
-    accounts: Account[];
-    roleAffiliation: (accountId: number) => void
-    passwordChange: (accountId: number) => void
-    personalDataChange: (accountId: number) => void
+    users: User[];
+    // roleAffiliation: (accountId: number) => void
+    // passwordChange: (accountId: number) => void
+    // personalDataChange: (accountId: number) => void
 }
 
-const SettingsUsers: React.FC<UsersTableProps> = ({ accounts, roleAffiliation, passwordChange, personalDataChange }) => {
+const SettingsUsers: React.FC<UsersTableProps> = ({ users/*, roleAffiliation, passwordChange, personalDataChange */}) => {
 
     return (
         <table>
@@ -22,7 +22,21 @@ const SettingsUsers: React.FC<UsersTableProps> = ({ accounts, roleAffiliation, p
                 </tr>
             </thead>
             <tbody>
-
+                {users.length === 0 ? (
+                    <tr>
+                        <td>Brak rekordów w tabeli Users</td>
+                    </tr>
+                ) : (
+                    users.map(user => (
+                        <tr key={user.id}>
+                            <td></td>
+                            <td>{user.id}</td>
+                            <td>{user.fname} {user.sname}</td>
+                            <td>TEMPORARY PASSWORD FIELD TEXT</td>
+                            <td></td>
+                        </tr>
+                    ))
+                )}
             </tbody>
         </table>
     )
