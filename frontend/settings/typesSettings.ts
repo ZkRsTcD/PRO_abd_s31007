@@ -6,8 +6,8 @@ export interface User /*Account*/ {
 
 export interface Role {
     id: number;
-    description: string;
-    numberOfUsers: number;
+    name: string;
+    number_of_users: number;
 }
 
 export interface Menu {

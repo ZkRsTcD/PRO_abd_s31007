@@ -29,7 +29,7 @@ const SettingsUsers: React.FC<UsersTableProps> = ({ users/*, roleAffiliation, pa
                 ) : (
                     users.map(user => (
                         <tr key={user.id}>
-                            <td></td>
+                            <td><input type="checkbox" name="assigned" value={user.id}></input></td>
                             <td>{user.id}</td>
                             <td>{user.fname} {user.sname}</td>
                             <td>TEMPORARY PASSWORD FIELD TEXT</td>

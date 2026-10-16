@@ -25,4 +25,6 @@ def get_menu():
 def get_permitted_menu(role_id: int):
     return service.get_permitted_menu(role_id)
 
-#@router.get()
+@router.get("/settings/assignedusers/{role_id}")
+def get_assigned_users(role_id: int):
+    return service.get_assigned_users(role_id)

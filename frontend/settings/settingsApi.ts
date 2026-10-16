@@ -17,5 +17,8 @@ export const settingsApi = {
         return data;
     },
 
-    //get
+    getAssignedUsers: async (roleId: number): Promise<User[]> => {
+        const { data } = await httpClient.get<User[]>(`/settings/assignedusers/${roleId}`)
+        return data;
+    }
 }

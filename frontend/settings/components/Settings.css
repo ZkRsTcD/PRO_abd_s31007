@@ -1,0 +1,13 @@
+.Settings{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.UserSettings {
+    grid-column: 1;
+}
+
+.RoleSettings {
+    grid-column: 2;
+    padding-inline: 40px;
+}

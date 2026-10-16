@@ -19,5 +19,6 @@ class SettingsService:
     def get_permitted_menu(self, role_id: int) -> list[dict] | None:
         return self.repository.get_permitted_menu(role_id)
 
-    #def
+    def get_assigned_users(self, role_id: int) -> list[dict] | None:
+        return self.repository.get_assigned_users(role_id)
 

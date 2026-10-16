@@ -11,6 +11,9 @@ export function useSettings() {
 
     const [usersError, setUsersError] = useState<string|null>(null);
     const [rolesError, setRolesError] = useState<string|null>(null);
+
+    const [selectedRoleId, setSelectedRoleId] = useState<number|null>(null);
+    const [assignedusersIds, setAssignedUsersIds] = useState<number[]>([]);
     
 
     const loadUsers = useCallback(async () => {
@@ -37,11 +40,26 @@ export function useSettings() {
         } finally {
             setLoadingRoles(false);
         }
+        //console.log(roles);
+    }, []);
+
+    const handleSelectRole = useCallback(async (roleId: number) => {
+        setSelectedRoleId(roleId);
+        try {
+            const assignedusers = await settingsApi.getAssignedUsers(roleId);
+            setAssignedUsersIds(assignedusers.map((u) => u.id));
+        } catch (err) {
+            console.error("Błąd pobierania przypisanych użytkowników", err)
+        }
     }, []);
 
     useEffect(() => {
         loadUsers();
     }, [loadUsers])
+
+    useEffect(() => {
+        loadRoles();
+    }, [loadRoles])
 
 
 

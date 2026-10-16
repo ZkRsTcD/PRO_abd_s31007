@@ -1,6 +1,8 @@
 import React from "react";
 import SettingsUsers from "./SettingsUsers"
 import { useSettings } from "../useSettings";
+import SettingsRoles from "./SettingsRoles";
+import './Settings.css'
 
 
 const Settings: React.FC = () => {
@@ -31,6 +33,13 @@ const Settings: React.FC = () => {
                     <SettingsUsers users={users} />     //Info o błędach i ładowaniu do przeniesienia wewnątrz samej listy
                 )}
                 {/* <SettingsUsers accounts={users} roleAffiliation={} passwordChange={} personalDataChange={}/> */}
+            </div>
+            <div className="RoleSettings">
+                {loadingRoles && <p>Trwa pobieranie danych o rolach z bazy...</p>}
+                {rolesError && <p>Błąd połączenia: {rolesError}</p>}
+                {!loadingRoles && !rolesError && (
+                    <SettingsRoles roles={roles} />
+                )}
             </div>
 
         </div>

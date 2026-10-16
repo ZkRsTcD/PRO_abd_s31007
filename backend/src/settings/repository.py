@@ -63,17 +63,17 @@ class SettingsRepository:
                   cursor.close()
                   connection.close()
 
-#     def get_assigned_users(self, role_id: int) -> list[dict] | None:
-#             connection = self.get_connection()
-#             cursor = connection.cursor()
-#             try:
-#                   cursor.execute("", role_id)
-#                   rows = cursor.fetchall()
-#                   if rows is None:
-#                          return None
-#                   columns = [column[0] for column in cursor.description]
-#                   menu_list = [dict(zip(columns, row)) for row in rows]
-#                   return menu_list
-#             finally:
-#                   cursor.close()
-#                   connection.close()
+    def get_assigned_users(self, role_id: int) -> list[dict] | None:
+            connection = self.get_connection()
+            cursor = connection.cursor()
+            try:
+                  cursor.execute("SELECT id FROM [User] WHERE role_id = ?", role_id)
+                  rows = cursor.fetchall()
+                  if rows is None:
+                         return None
+                  columns = [column[0] for column in cursor.description]
+                  users_list = [dict(zip(columns, row)) for row in rows]
+                  return users_list
+            finally:
+                  cursor.close()
+                  connection.close()
