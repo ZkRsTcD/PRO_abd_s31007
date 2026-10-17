@@ -3,10 +3,11 @@ import type { Role } from '../typesSettings'
 
 interface RolesTableProps {
     roles: Role[];
-    //onSelect: (roleId: number) => void
+    selectedRoleId: number | null;
+    onSelect: (roleId: number) => void;
 }
 
-const SettingsRoles: React.FC<RolesTableProps> = ({ roles }) => {
+const SettingsRoles: React.FC<RolesTableProps> = ({ roles, selectedRoleId, onSelect }) => {
 
     //console.log(roles);
 
@@ -29,7 +30,7 @@ const SettingsRoles: React.FC<RolesTableProps> = ({ roles }) => {
                 ) : (
                     roles.map(role => (
                         <tr key={role.id}>
-                            <td><input type="radio" name="selectedRole" value={role.id}></input></td>
+                            <td><input type="radio" name="selectedRole" value={role.id} checked={selectedRoleId === role.id} onChange={() => onSelect(role.id)}></input></td>
                             <td>{role.id}</td>
                             <td>{role.name}</td>
                             <td>{role.number_of_users}</td>

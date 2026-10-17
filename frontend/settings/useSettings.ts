@@ -71,7 +71,10 @@ export function useSettings() {
         menu,
         usersError,
         rolesError,
+        selectedRoleId,
+        assignedusersIds,
         loadUsers,
-        loadRoles
+        loadRoles,
+        handleSelectRole
     }
 }

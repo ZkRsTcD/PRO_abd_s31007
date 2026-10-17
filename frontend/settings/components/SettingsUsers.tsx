@@ -6,9 +6,11 @@ interface UsersTableProps {
     // roleAffiliation: (accountId: number) => void
     // passwordChange: (accountId: number) => void
     // personalDataChange: (accountId: number) => void
+    assignedusersIds: number[];
+
 }
 
-const SettingsUsers: React.FC<UsersTableProps> = ({ users/*, roleAffiliation, passwordChange, personalDataChange */}) => {
+const SettingsUsers: React.FC<UsersTableProps> = ({ users, assignedusersIds}) => {
 
     return (
         <table>
@@ -29,7 +31,7 @@ const SettingsUsers: React.FC<UsersTableProps> = ({ users/*, roleAffiliation, pa
                 ) : (
                     users.map(user => (
                         <tr key={user.id}>
-                            <td><input type="checkbox" name="assigned" value={user.id}></input></td>
+                            <td><input type="checkbox" name="assigned" value={user.id} checked={assignedusersIds.includes(user.id)}></input></td>
                             <td>{user.id}</td>
                             <td>{user.fname} {user.sname}</td>
                             <td>TEMPORARY PASSWORD FIELD TEXT</td>
