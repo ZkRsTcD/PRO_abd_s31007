@@ -11,5 +11,6 @@ export interface Role {
 }
 
 export interface Menu {
+    id: number;
     title: string;
 }

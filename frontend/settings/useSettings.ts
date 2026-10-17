@@ -8,12 +8,15 @@ export function useSettings() {
     const [roles, setRoles] = useState<Role[]>([]);
     const [loadingRoles, setLoadingRoles] = useState<boolean>(true);
     const [menu, setMenu] = useState<Menu[]>([]);
+    const [loadingMenu, setLoadingMenu] = useState<boolean>(true);
 
     const [usersError, setUsersError] = useState<string|null>(null);
     const [rolesError, setRolesError] = useState<string|null>(null);
+    const [menuError, setMenuError] = useState<string|null>(null);
 
     const [selectedRoleId, setSelectedRoleId] = useState<number|null>(null);
     const [assignedusersIds, setAssignedUsersIds] = useState<number[]>([]);
+    const [permittedMenuIds, setPermittedMenuIds] = useState<number[]>([]);
     
 
     const loadUsers = useCallback(async () => {
@@ -43,11 +46,26 @@ export function useSettings() {
         //console.log(roles);
     }, []);
 
+    const loadMenu = useCallback(async () => {
+        try {
+            setLoadingMenu(true);
+            const data = await settingsApi.getMenu();
+            setMenu(data);
+            setMenuError(null);
+        } catch (err) {
+            setMenuError(err instanceof Error ? err.message : 'Błąd pobierania danych')
+        } finally {
+            setLoadingMenu(false);
+        }
+    }, []);
+
     const handleSelectRole = useCallback(async (roleId: number) => {
         setSelectedRoleId(roleId);
         try {
             const assignedusers = await settingsApi.getAssignedUsers(roleId);
+            const permittedMenu = await settingsApi.getPermittedMenu(roleId);
             setAssignedUsersIds(assignedusers.map((u) => u.id));
+            setPermittedMenuIds(permittedMenu.map((m) => m.id));
         } catch (err) {
             console.error("Błąd pobierania przypisanych użytkowników", err)
         }
@@ -61,6 +79,10 @@ export function useSettings() {
         loadRoles();
     }, [loadRoles])
 
+    useEffect(() => {
+        loadMenu();
+    }, [loadMenu])
+
 
 
     return {
@@ -69,12 +91,16 @@ export function useSettings() {
         roles,
         loadingRoles,
         menu,
+        loadingMenu,
         usersError,
         rolesError,
+        menuError,
         selectedRoleId,
         assignedusersIds,
+        permittedMenuIds,
         loadUsers,
         loadRoles,
-        handleSelectRole
+        handleSelectRole,
+        loadMenu
     }
 }

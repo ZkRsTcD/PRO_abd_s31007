@@ -11,3 +11,17 @@
     grid-column: 2;
     padding-inline: 40px;
 }
+
+.MenuSettings {
+    grid-column: 2;
+    padding-inline: 40px;
+    padding-top: 40px;
+    tr{
+        background-color: rgba(32, 88, 139, 0.774);
+        height: 38px;
+        margin-bottom: 10px;
+        /* td{
+            
+        } */
+    }
+}

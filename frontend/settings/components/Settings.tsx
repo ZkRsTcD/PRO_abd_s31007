@@ -1,7 +1,8 @@
 import React from "react";
-import SettingsUsers from "./SettingsUsers"
+import SettingsUsers from "./SettingsUsers";
 import { useSettings } from "../useSettings";
 import SettingsRoles from "./SettingsRoles";
+import SettingsMenu from "./SettingsMenu";
 import './Settings.css'
 
 
@@ -12,13 +13,17 @@ const Settings: React.FC = () => {
         roles,
         loadingRoles,
         menu,
+        loadingMenu,
         usersError,
         rolesError,
+        menuError,
         selectedRoleId,
         assignedusersIds,
+        permittedMenuIds,
         loadUsers,
         loadRoles,
-        handleSelectRole
+        handleSelectRole,
+        loadMenu
         //
         //
         //
@@ -42,6 +47,13 @@ const Settings: React.FC = () => {
                 {rolesError && <p>Błąd połączenia: {rolesError}</p>}
                 {!loadingRoles && !rolesError && (
                     <SettingsRoles roles={roles} selectedRoleId={selectedRoleId} onSelect={handleSelectRole}/>
+                )}
+            </div>
+            <div className="MenuSettings">
+                {loadingMenu && <p>Trwa pobieranie danych o menu z bazy...</p>}
+                {menuError && <p>Błąd połączenia: {menuError}</p>}
+                {!loadingMenu && !menuError && (
+                    <SettingsMenu menu={menu} permittedMenuIds={permittedMenuIds}/>
                 )}
             </div>
 

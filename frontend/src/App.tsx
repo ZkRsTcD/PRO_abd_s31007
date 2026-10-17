@@ -19,7 +19,7 @@ const App: React.FC = () => {
         <button onClick={() => setCurrentModule('recipes')} style={{color: 'aliceblue'}}>RECIPES</button>
         <button onClick={() => setCurrentModule('alarms')}>ALARMS</button>
         <button onClick={() => setCurrentModule('settings')} style={{color: 'aliceblue'}}>SETTINGS</button>
-        
+        {/* To be changed for database menu version */}
         <div className='languageSelection'>
           <button>PL</button>
           <button>ENG</button>
