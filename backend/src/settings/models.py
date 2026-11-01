@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List
 
 class UserListItem(BaseModel):
     id: int
@@ -13,4 +14,14 @@ class RoleListItem(BaseModel):
 
 class MenuListItem(BaseModel):
     title: str
+
+class RoleUsersUpdate(BaseModel):
+    roleId: int
+    toAdd: List[int]
+    toRemove: List[int]
+
+class RoleMenuUpdate(BaseModel):
+    roleId: int
+    toAdd: List[int]
+    toRemove: List[int]
 

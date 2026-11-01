@@ -17,6 +17,11 @@ export function useSettings() {
     const [selectedRoleId, setSelectedRoleId] = useState<number|null>(null);
     const [assignedusersIds, setAssignedUsersIds] = useState<number[]>([]);
     const [permittedMenuIds, setPermittedMenuIds] = useState<number[]>([]);
+
+    const [prevAssignedUsersIds, setPrevAssignedUsersIds] = useState<number[]>([]);
+    const [prevPermittedMenuIds, setPrevPermittedMenuIds] = useState<number[]>([]);
+
+    const [anyChangeInPermissions, setAnyChangeInPermissions] = useState<boolean>(false);
     
 
     const loadUsers = useCallback(async () => {
@@ -62,26 +67,42 @@ export function useSettings() {
     const handleSelectRole = useCallback(async (roleId: number) => {
         setSelectedRoleId(roleId);
         try {
-            const assignedusers = await settingsApi.getAssignedUsers(roleId);
+            const assignedUsers = await settingsApi.getAssignedUsers(roleId);
             const permittedMenu = await settingsApi.getPermittedMenu(roleId);
-            setAssignedUsersIds(assignedusers.map((u) => u.id));
+            setAssignedUsersIds(assignedUsers.map((u) => u.id));
             setPermittedMenuIds(permittedMenu.map((m) => m.id));
+            setAnyChangeInPermissions(false);
+            setPrevAssignedUsersIds(assignedUsers.map((u) => u.id));
+            setPrevPermittedMenuIds(permittedMenu.map((m) => m.id));
         } catch (err) {
             console.error("Błąd pobierania przypisanych użytkowników", err)
         }
     }, []);
 
+    //const handleToggleUser = useCallback(userId)
+
+    const handleToggleMenu = useCallback((menuId: number) => {
+        setPermittedMenuIds((prev) => prev.includes(menuId) ? prev.filter((id) => id !== menuId) : [...prev, menuId]);
+        setAnyChangeInPermissions(true)
+    }, []);
+
+    const handleSubmitChanges = async() => {
+        const addedAssignedUsersIds = assignedusersIds.filter(id => !prevAssignedUsersIds.includes(id));
+        const removedAssignedUsersIds = prevAssignedUsersIds.filter(id => !assignedusersIds.includes(id));
+
+        const addedPermittedMenuIds = permittedMenuIds.filter(id => !prevPermittedMenuIds.includes(id));
+        const removedPermittedMenuIds = prevPermittedMenuIds.filter(id => !permittedMenuIds.includes(id));
+
+        if(selectedRoleId){
+            await settingsApi.updateRolePermissions(selectedRoleId, addedAssignedUsersIds, removedAssignedUsersIds, addedPermittedMenuIds, removedPermittedMenuIds)
+        }
+    }
+
     useEffect(() => {
         loadUsers();
-    }, [loadUsers])
-
-    useEffect(() => {
         loadRoles();
-    }, [loadRoles])
-
-    useEffect(() => {
         loadMenu();
-    }, [loadMenu])
+    }, [loadUsers, loadRoles, loadMenu])
 
 
 
@@ -98,9 +119,12 @@ export function useSettings() {
         selectedRoleId,
         assignedusersIds,
         permittedMenuIds,
+        anyChangeInPermissions,
         loadUsers,
         loadRoles,
         handleSelectRole,
-        loadMenu
+        loadMenu,
+        handleToggleMenu,
+        handleSubmitChanges
     }
 }

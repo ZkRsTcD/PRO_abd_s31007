@@ -20,10 +20,13 @@ const Settings: React.FC = () => {
         selectedRoleId,
         assignedusersIds,
         permittedMenuIds,
+        anyChangeInPermissions,
         loadUsers,
         loadRoles,
         handleSelectRole,
-        loadMenu
+        loadMenu,
+        handleToggleMenu,
+        handleSubmitChanges
         //
         //
         //
@@ -35,6 +38,7 @@ const Settings: React.FC = () => {
         <div className="Settings">
             <h1>Ustawienia</h1>
             <div className="UserSettings">
+                <label>UWAGA: Przypisując konto do wybranej roli nadpisujesz jego dotychczasowe przypisanie do roli.</label>
                 {loadingUsers && <p>Trwa pobieranie danych o użytkownikach z bazy...</p>}
                 {usersError && <p>Błąd połączenia: {usersError}</p>}
                 {!loadingUsers && !usersError && (
@@ -53,10 +57,14 @@ const Settings: React.FC = () => {
                 {loadingMenu && <p>Trwa pobieranie danych o menu z bazy...</p>}
                 {menuError && <p>Błąd połączenia: {menuError}</p>}
                 {!loadingMenu && !menuError && (
-                    <SettingsMenu menu={menu} permittedMenuIds={permittedMenuIds}/>
+                    <SettingsMenu menu={menu} permittedMenuIds={permittedMenuIds} onSelect={handleToggleMenu}/>
                 )}
             </div>
-
+            <div className="SubmitButton">
+                {anyChangeInPermissions && (
+                    <button onClick={() => handleSubmitChanges}>Zatwierdź zmiany</button>
+                )}
+            </div>
         </div>
     )
 }

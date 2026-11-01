@@ -30,5 +30,9 @@ export const settingsApi = {
     getPermittedMenu: async (roleId: number): Promise<Menu[]> => {
         const { data } = await httpClient.get<Menu[]>(`/settings/menu/${roleId}`);
         return data;
+    },
+
+    updateRolePermissions: async (roleId: number, toAddUsers: number[], toRemoveUsers: number[], toAddMenus: number[], toRemoveMenus: number[]): Promise<void> => {
+        await httpClient.put(`!!!!!!!!!!!!!!!!!!!!!!!!!`)gsdfgsdfg
     }
 }

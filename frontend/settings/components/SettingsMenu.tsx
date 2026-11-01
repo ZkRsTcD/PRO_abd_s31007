@@ -4,9 +4,10 @@ import type { Menu } from '../typesSettings'
 interface MenuTableProps {
     menu: Menu[];
     permittedMenuIds: number[];
+    onSelect: (roleId: number) => void;
 }
 
-const SettingsMenu: React.FC<MenuTableProps> = ({ menu, permittedMenuIds }) => {
+const SettingsMenu: React.FC<MenuTableProps> = ({ menu, permittedMenuIds, onSelect }) => {
 
     return (
         <table>
@@ -19,7 +20,7 @@ const SettingsMenu: React.FC<MenuTableProps> = ({ menu, permittedMenuIds }) => {
                     menu.map(m => (
                         <tr key={m.id}>
                             <td>{m.title}</td>
-                            <td><input type="checkbox" name="permitted" value={m.id} checked={permittedMenuIds.includes(m.id)}></input></td>
+                            <td><input type="checkbox" name="permitted" value={m.id} checked={permittedMenuIds.includes(m.id)} onChange={() => onSelect(m.id)}></input></td>
                         </tr>
                     ))
                 )}
