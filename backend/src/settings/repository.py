@@ -1,15 +1,16 @@
 import pyodbc
+from typing import List
 
 from database import connection_string
 
 
 class SettingsRepository:
 
-    def get_connection(self):
+      def get_connection(self):
             return pyodbc.connect(connection_string)
 
 
-    def get_all_users(self) -> list[dict]:
+      def get_all_users(self) -> list[dict]:
           connection = self.get_connection()
           cursor = connection.cursor()
           try:
@@ -22,7 +23,7 @@ class SettingsRepository:
                 cursor.close()
                 connection.close()
 
-    def get_all_roles(self) -> list[dict]:
+      def get_all_roles(self) -> list[dict]:
             connection = self.get_connection()
             cursor = connection.cursor()
             try:
@@ -35,7 +36,7 @@ class SettingsRepository:
                   cursor.close()
                   connection.close()
 
-    def get_whole_menu(self) -> list[dict]:
+      def get_whole_menu(self) -> list[dict]:
                 connection = self.get_connection()
                 cursor = connection.cursor()
                 try:
@@ -48,7 +49,7 @@ class SettingsRepository:
                       cursor.close()
                       connection.close()
     
-    def get_permitted_menu(self, role_id: int) -> list[dict] | None:
+      def get_permitted_menu(self, role_id: int) -> list[dict] | None:
             connection = self.get_connection()
             cursor = connection.cursor()
             try:
@@ -63,7 +64,7 @@ class SettingsRepository:
                   cursor.close()
                   connection.close()
 
-    def get_assigned_users(self, role_id: int) -> list[dict] | None:
+      def get_assigned_users(self, role_id: int) -> list[dict] | None:
             connection = self.get_connection()
             cursor = connection.cursor()
             try:
@@ -77,3 +78,49 @@ class SettingsRepository:
             finally:
                   cursor.close()
                   connection.close()
+
+
+      def update_users_permissions() -> bool:
+            return True
+
+      def create_menu_permissions(self, role_id: int, menu_id: List[int]) -> bool:
+            connection = self.get_connection()
+            cursor = connection.cursor()
+            try:
+                  cursor.execute("SELECT Role_id, Menu_id FROM Menu_Role WHERE Role_id = ? AND Menu_id = ?", role_id, menu_id)
+                  if cursor.fetchone() is not None:
+                        return False
+                  for m in menu_id:
+                        cursor.execute("INSERT INTO Menu_Role (Menu_id, Role_id) VALUES (?, ?)", m, role_id)
+                  connection.commit()
+                  return True
+            except Exception:
+                  connection.rollback()
+                  raise
+            finally:
+                  cursor.close()
+                  connection.close()
+
+      def delete_menu_permissions(self, role_id: int, menu_id: List[int]) -> bool:
+            connection = self.get_connection()
+            cursor = connection.cursor()
+            try:
+                  placeholders = ','.join(['?'] * len(menu_id))
+                  query = f"SELECT Role_id, Menu_id FROM Menu_Role WHERE Role_id = ? AND Menu_id IN ({placeholders})"
+                  parameters = [role_id] + menu_id
+                  cursor.execute(query, parameters)
+                  rows = cursor.fetchall()
+                  if not rows:
+                        return False
+                  delete_query = f"DELETE FROM Menu_Role WHERE Role_id = ? AND Menu_id IN ({placeholders})"
+                  cursor.execute(delete_query, parameters)
+                  connection.commit()
+                  return True
+            except Exception:
+                  connection.rollback()
+                  raise
+            finally:
+                  cursor.close()
+                  connection.close()
+
+                  

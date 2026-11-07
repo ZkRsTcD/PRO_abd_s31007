@@ -20,8 +20,15 @@ class RoleUsersUpdate(BaseModel):
     toAdd: List[int]
     toRemove: List[int]
 
-class RoleMenuUpdate(BaseModel):
+class RoleMenuCreate(BaseModel):
     roleId: int
     toAdd: List[int]
+
+class RoleMenuDelete(BaseModel):
+    roleId: int
     toRemove: List[int]
+
+class SuccessResponse(BaseModel):
+    status: str = "success"
+    message: str
 

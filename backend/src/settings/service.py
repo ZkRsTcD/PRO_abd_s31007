@@ -1,6 +1,6 @@
 
 from settings.repository import SettingsRepository
-#from settings.models import 
+from settings.models import RoleUsersUpdate, RoleMenuCreate, RoleMenuDelete
 
 
 class SettingsService:
@@ -21,4 +21,13 @@ class SettingsService:
 
     def get_assigned_users(self, role_id: int) -> list[dict] | None:
         return self.repository.get_assigned_users(role_id)
+
+    def update_users_permissions(self, details: RoleUsersUpdate) -> None:
+        #self.repository.update_users_permissions()
+
+    def create_menu_permissions(self, details: RoleMenuCreate) -> None:
+        self.repository.create_menu_permissions(details.roleId, details.toAdd)
+
+    def delete_menu_permissions(self, details: RoleMenuDelete) -> None:
+        self.repository.delete_menu_permissions(details.roleId, details.toRemove)
 

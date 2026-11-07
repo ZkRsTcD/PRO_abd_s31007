@@ -25,12 +25,9 @@ const Settings: React.FC = () => {
         loadRoles,
         handleSelectRole,
         loadMenu,
+        handleToggleUser,
         handleToggleMenu,
         handleSubmitChanges
-        //
-        //
-        //
-        //
     } = useSettings();
 
 
@@ -42,7 +39,7 @@ const Settings: React.FC = () => {
                 {loadingUsers && <p>Trwa pobieranie danych o użytkownikach z bazy...</p>}
                 {usersError && <p>Błąd połączenia: {usersError}</p>}
                 {!loadingUsers && !usersError && (
-                    <SettingsUsers users={users} assignedusersIds={assignedusersIds}/>     //Info o błędach i ładowaniu do przeniesienia wewnątrz samej listy
+                    <SettingsUsers users={users} assignedusersIds={assignedusersIds} onSelect={handleToggleUser}/>     //Info o błędach i ładowaniu do przeniesienia wewnątrz samej listy
                 )}
                 {/* <SettingsUsers accounts={users} roleAffiliation={} passwordChange={} personalDataChange={}/> */}
             </div>

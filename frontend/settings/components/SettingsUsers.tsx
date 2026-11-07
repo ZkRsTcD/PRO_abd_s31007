@@ -7,10 +7,10 @@ interface UsersTableProps {
     // passwordChange: (accountId: number) => void
     // personalDataChange: (accountId: number) => void
     assignedusersIds: number[];
-
+    onSelect: (userId: number) => void;
 }
 
-const SettingsUsers: React.FC<UsersTableProps> = ({ users, assignedusersIds}) => {
+const SettingsUsers: React.FC<UsersTableProps> = ({ users, assignedusersIds, onSelect}) => {
 
     return (
         <table>
@@ -31,7 +31,7 @@ const SettingsUsers: React.FC<UsersTableProps> = ({ users, assignedusersIds}) =>
                 ) : (
                     users.map(user => (
                         <tr key={user.id}>
-                            <td><input type="checkbox" name="assigned" value={user.id} checked={assignedusersIds.includes(user.id)}></input></td>
+                            <td><input type="checkbox" name="assigned" value={user.id} checked={assignedusersIds.includes(user.id)} onChange={() => onSelect(user.id)}></input></td>
                             <td>{user.id}</td>
                             <td>{user.fname} {user.sname}</td>
                             <td>TEMPORARY PASSWORD FIELD TEXT</td>

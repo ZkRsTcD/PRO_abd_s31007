@@ -79,7 +79,10 @@ export function useSettings() {
         }
     }, []);
 
-    //const handleToggleUser = useCallback(userId)
+    const handleToggleUser = useCallback((userId: number) => {
+        setAssignedUsersIds((prev) => prev.includes(userId) ? prev.filter((id) => id !== userId) : [...prev, userId]);
+        setAnyChangeInPermissions(true);
+    }, [])
 
     const handleToggleMenu = useCallback((menuId: number) => {
         setPermittedMenuIds((prev) => prev.includes(menuId) ? prev.filter((id) => id !== menuId) : [...prev, menuId]);
@@ -94,7 +97,15 @@ export function useSettings() {
         const removedPermittedMenuIds = prevPermittedMenuIds.filter(id => !permittedMenuIds.includes(id));
 
         if(selectedRoleId){
-            await settingsApi.updateRolePermissions(selectedRoleId, addedAssignedUsersIds, removedAssignedUsersIds, addedPermittedMenuIds, removedPermittedMenuIds)
+            if(addedAssignedUsersIds.length !== 0 || removedAssignedUsersIds.length !== 0){
+                await settingsApi.updateRoleUserPermissions(selectedRoleId, addedAssignedUsersIds, removedAssignedUsersIds);
+            }
+            if(addedPermittedMenuIds.length !== 0){
+                await settingsApi.createRoleMenuPermissions(selectedRoleId, addedPermittedMenuIds);
+            }
+            if(removedPermittedMenuIds.length !== 0){
+                await settingsApi.removeRoleMenuPermissions(selectedRoleId, removedPermittedMenuIds);
+            }
         }
     }
 
@@ -124,6 +135,7 @@ export function useSettings() {
         loadRoles,
         handleSelectRole,
         loadMenu,
+        handleToggleUser,
         handleToggleMenu,
         handleSubmitChanges
     }

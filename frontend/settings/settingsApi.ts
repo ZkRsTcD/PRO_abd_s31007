@@ -32,7 +32,15 @@ export const settingsApi = {
         return data;
     },
 
-    updateRolePermissions: async (roleId: number, toAddUsers: number[], toRemoveUsers: number[], toAddMenus: number[], toRemoveMenus: number[]): Promise<void> => {
-        await httpClient.put(`!!!!!!!!!!!!!!!!!!!!!!!!!`)gsdfgsdfg
+    updateRoleUserPermissions: async (roleId: number, toAddUsers: number[], toRemoveUsers: number[]): Promise<void> => {
+        await httpClient.put(`!!!!!!!!!!!!!!!!!!!!!!!!!`)dfghj
+    },
+
+    createRoleMenuPermissions: async (roleId: number, toAddMenus: number[]): Promise<void> => {
+        await httpClient.post('')
+    },
+
+    removeRoleMenuPermissions: async (roleId: number, toRemoveMenus: number[]): Promise<void> => {
+
     }
 }
