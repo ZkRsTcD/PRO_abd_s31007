@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { User, Role, Menu } from "./typesSettings";
+import type { User, Role, Menu, RoleUsersUpdate, RoleMenuCreate, RoleMenuDelete } from "./typesSettings";
 
 const httpClient = axios.create({
     baseURL: 'http://localhost:8080',
@@ -32,15 +32,15 @@ export const settingsApi = {
         return data;
     },
 
-    updateRoleUserPermissions: async (roleId: number, toAddUsers: number[], toRemoveUsers: number[]): Promise<void> => {
-        await httpClient.put(`!!!!!!!!!!!!!!!!!!!!!!!!!`)dfghj
+    updateRoleUserPermissions: async (data: RoleUsersUpdate): Promise<void> => {
+        await httpClient.put(`/settings/role/updateusers`, data);
     },
 
-    createRoleMenuPermissions: async (roleId: number, toAddMenus: number[]): Promise<void> => {
-        await httpClient.post('')
+    createRoleMenuPermissions: async (data: RoleMenuCreate): Promise<void> => {
+        await httpClient.post('/settings/role/createmenupermissions', data);
     },
 
-    removeRoleMenuPermissions: async (roleId: number, toRemoveMenus: number[]): Promise<void> => {
-
+    removeRoleMenuPermissions: async (data: RoleMenuDelete): Promise<void> => {
+        await httpClient.delete('/settings/role/deletemenupermissions', {data});
     }
 }

@@ -23,11 +23,13 @@ class SettingsService:
         return self.repository.get_assigned_users(role_id)
 
     def update_users_permissions(self, details: RoleUsersUpdate) -> None:
-        #self.repository.update_users_permissions()
+        self.repository.update_users_permissions(details.roleId, details.toAdd, details.toRemove)
 
     def create_menu_permissions(self, details: RoleMenuCreate) -> None:
         self.repository.create_menu_permissions(details.roleId, details.toAdd)
 
     def delete_menu_permissions(self, details: RoleMenuDelete) -> None:
-        self.repository.delete_menu_permissions(details.roleId, details.toRemove)
+        deleted = self.repository.delete_menu_permissions(details.roleId, details.toRemove)
+        if not deleted:
+            raise ValueError("Dostęp do menu dla roli nie może zostać usunięty, ponieważ taki dostęp nie istnieje")
 

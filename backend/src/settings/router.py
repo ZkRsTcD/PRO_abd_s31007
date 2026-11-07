@@ -29,29 +29,29 @@ def get_permitted_menu(role_id: int):
 def get_assigned_users(role_id: int):
     return service.get_assigned_users(role_id)
 
-@router.put("/settings/updateusers")
+@router.put("/settings/role/updateusers")
 def update_users_permissions(details: RoleUsersUpdate):
     try:
-
-        return SuccessResponse(message="Receptura została zaktualizowana")
+        service.update_users_permissions(details)
+        return SuccessResponse(message="Uprawnienia użytkownika zostały zaktualizowane")
     except ValueError as err:
         raise HTTPException(status_code=400, detail=str(err))
     except Exception:
         raise HTTPException(status_code=500, detail="Błąd zapisu w bazie danych")
 
-@router.post("settings/role/createmenupermissions")
+@router.post("/settings/role/createmenupermissions")
 def create_menu_permissions(details: RoleMenuCreate):
     try:
-
-        return SuccessResponse(message="Receptura została dodana")
+        service.create_menu_permissions(details)
+        return SuccessResponse(message="Uprawnienia w menu dla roli zostały dodane")
     except Exception:
         raise HTTPException(status_code=500, detail="Błąd dodawania rekordu do bazy")
 
-@router.delete("settings/role/deletemenupermissions")
+@router.delete("/settings/role/deletemenupermissions")
 def delete_menu_permissions(details: RoleMenuDelete):
     try:
-
-        return SuccessResponse(message="Receptura została usunięta")
+        service.delete_menu_permissions(details)
+        return SuccessResponse(message="Uprawnienia w menu dla roli zostały usunięte")
     except ValueError as err:
         raise HTTPException(status_code=404, detail=str(err))
     except Exception:

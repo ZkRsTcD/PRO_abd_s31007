@@ -66,6 +66,7 @@ export function useSettings() {
 
     const handleSelectRole = useCallback(async (roleId: number) => {
         setSelectedRoleId(roleId);
+        //console.log("test")
         try {
             const assignedUsers = await settingsApi.getAssignedUsers(roleId);
             const permittedMenu = await settingsApi.getPermittedMenu(roleId);
@@ -96,17 +97,21 @@ export function useSettings() {
         const addedPermittedMenuIds = permittedMenuIds.filter(id => !prevPermittedMenuIds.includes(id));
         const removedPermittedMenuIds = prevPermittedMenuIds.filter(id => !permittedMenuIds.includes(id));
 
+        console.log("test")
         if(selectedRoleId){
             if(addedAssignedUsersIds.length !== 0 || removedAssignedUsersIds.length !== 0){
-                await settingsApi.updateRoleUserPermissions(selectedRoleId, addedAssignedUsersIds, removedAssignedUsersIds);
+                await settingsApi.updateRoleUserPermissions({roleId: selectedRoleId, toAdd: addedAssignedUsersIds, toRemove: removedAssignedUsersIds});
             }
             if(addedPermittedMenuIds.length !== 0){
-                await settingsApi.createRoleMenuPermissions(selectedRoleId, addedPermittedMenuIds);
+                await settingsApi.createRoleMenuPermissions({roleId: selectedRoleId, toAdd: addedPermittedMenuIds});
             }
             if(removedPermittedMenuIds.length !== 0){
-                await settingsApi.removeRoleMenuPermissions(selectedRoleId, removedPermittedMenuIds);
+                await settingsApi.removeRoleMenuPermissions({roleId: selectedRoleId, toRemove: removedPermittedMenuIds});
             }
         }
+
+        loadRoles();
+        setAnyChangeInPermissions(false);
     }
 
     useEffect(() => {

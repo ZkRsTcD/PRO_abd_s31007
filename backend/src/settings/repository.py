@@ -80,18 +80,35 @@ class SettingsRepository:
                   connection.close()
 
 
-      def update_users_permissions() -> bool:
-            return True
+      def update_users_permissions(self, role_id: int, to_add: List[int], to_remove: List[int]) -> bool:
+            connection = self.get_connection()
+            cursor = connection.cursor()
+            try:
+                  if to_remove:
+                        #No removal. Setting role to id = 1 (No access)
+                        query = "UPDATE [User] SET role_id = 1 WHERE id = ?"
+                        parameters = [(u,) for u in to_remove]
+                        cursor.executemany(query, parameters)
+                  if to_add:
+                        query = "UPDATE [User] SET role_id = ? WHERE id = ?"
+                        parameters = [(role_id, u) for u in to_add]
+                        cursor.executemany(query, parameters)
+                  connection.commit()
+                  return True
+            except Exception:
+                  connection.rollback()
+                  raise
+            finally:
+                  cursor.close()
+                  connection.close()
 
       def create_menu_permissions(self, role_id: int, menu_id: List[int]) -> bool:
             connection = self.get_connection()
             cursor = connection.cursor()
             try:
-                  cursor.execute("SELECT Role_id, Menu_id FROM Menu_Role WHERE Role_id = ? AND Menu_id = ?", role_id, menu_id)
-                  if cursor.fetchone() is not None:
-                        return False
-                  for m in menu_id:
-                        cursor.execute("INSERT INTO Menu_Role (Menu_id, Role_id) VALUES (?, ?)", m, role_id)
+                  query = "INSERT INTO Menu_Role (Menu_id, Role_id) VALUES (?, ?)"
+                  parameters = [(m, role_id) for m in menu_id]
+                  cursor.executemany(query, parameters)
                   connection.commit()
                   return True
             except Exception:

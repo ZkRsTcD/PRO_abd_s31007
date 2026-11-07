@@ -14,3 +14,19 @@ export interface Menu {
     id: number;
     title: string;
 }
+
+export interface RoleUsersUpdate {
+    roleId: number;
+    toAdd: number[];
+    toRemove: number[];
+}
+
+export interface RoleMenuCreate {
+    roleId: number;
+    toAdd: number[];
+}
+
+export interface RoleMenuDelete {
+    roleId: number;
+    toRemove: number[];
+}

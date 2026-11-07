@@ -35,15 +35,16 @@ const Settings: React.FC = () => {
         <div className="Settings">
             <h1>Ustawienia</h1>
             <div className="UserSettings">
-                <label>UWAGA: Przypisując konto do wybranej roli nadpisujesz jego dotychczasowe przypisanie do roli.</label>
+                <label>UWAGA: Przypisując konto do wybranej roli nadpisujesz jego dotychczasowe przypisanie do jakiejkolwiek roli.</label>
                 {loadingUsers && <p>Trwa pobieranie danych o użytkownikach z bazy...</p>}
                 {usersError && <p>Błąd połączenia: {usersError}</p>}
                 {!loadingUsers && !usersError && (
-                    <SettingsUsers users={users} assignedusersIds={assignedusersIds} onSelect={handleToggleUser}/>     //Info o błędach i ładowaniu do przeniesienia wewnątrz samej listy
+                    <SettingsUsers users={users} assignedusersIds={assignedusersIds} onSelect={handleToggleUser} selectedRoleId={selectedRoleId}/>     //Info o błędach i ładowaniu do przeniesienia wewnątrz samej listy
                 )}
                 {/* <SettingsUsers accounts={users} roleAffiliation={} passwordChange={} personalDataChange={}/> */}
             </div>
             <div className="RoleSettings">
+                <label>Przycisk "Zatwierdź zmiany" pojawiający się na dole ekranu wpływa wyłącznie na wybraną rolę</label>
                 {loadingRoles && <p>Trwa pobieranie danych o rolach z bazy...</p>}
                 {rolesError && <p>Błąd połączenia: {rolesError}</p>}
                 {!loadingRoles && !rolesError && (
@@ -59,7 +60,8 @@ const Settings: React.FC = () => {
             </div>
             <div className="SubmitButton">
                 {anyChangeInPermissions && (
-                    <button onClick={() => handleSubmitChanges}>Zatwierdź zmiany</button>
+                    <button onClick={handleSubmitChanges}>Zatwierdź zmiany</button>
+                    
                 )}
             </div>
         </div>
