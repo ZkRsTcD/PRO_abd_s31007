@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Recipes from '../recipes/components/Recipes'
 import Settings from '../settings/components/Settings'
+import Production from '../production/components/Production'
 import './App.css'
 
 
@@ -12,7 +13,7 @@ const App: React.FC = () => {
       <aside>
         <h2>PROTOTYP</h2>
         <button onClick={() => setCurrentModule('liveStatus')}>LIVE STATUS</button>
-        <button onClick={() => setCurrentModule('production')}>PRODUCTION</button>
+        <button onClick={() => setCurrentModule('production')} style={{color: 'aliceblue'}}>PRODUCTION</button>
         <button onClick={() => setCurrentModule('stoppage')}>STOPPAGE</button>
         <button onClick={() => setCurrentModule('scrap')}>SCRAP</button>
         <button onClick={() => setCurrentModule('quality')}>QUALITY</button>
@@ -27,6 +28,8 @@ const App: React.FC = () => {
       </aside>
 
       <main>
+
+        {currentModule === 'production' && <Production />}
         {currentModule === 'recipes' && <Recipes />}
 
         {currentModule === 'settings' && <Settings />}
