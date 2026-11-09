@@ -9,6 +9,7 @@ from pathlib import Path
 src_dir = Path(__file__).resolve().parent
 
 
+from production.router import router as production_router
 from recipes.router import router as recipes_router
 from settings.router import router as settings_router
 
@@ -49,6 +50,7 @@ app.add_middleware(
 )
 
 
+app.include_router(production_router, tags=["Produkcja"])
 app.include_router(recipes_router, tags=["Receptury"])
 app.include_router(settings_router, tags=["Ustawienia"])
 

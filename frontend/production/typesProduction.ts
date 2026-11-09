@@ -2,12 +2,13 @@ export interface ProductionBatch {
     id: number;
     Machine_id: number;
     timestart: string;
-    timework: number;
-    timewait: number;
-    User_id: number;
     worksorder: string;
     partnum: string;
-    Recipe_id: number;
+    name: string;       //Recipe name
     quantity: number;
-    Stops_id: number;
+    fname: string;     //User fnam
+    sname: string;     //User sname
+    timework: number;
+    timewait: number;
+    reason: string;     //Stop reason
 }

@@ -4,11 +4,12 @@ class ProductionListItem(BaseModel):
     id: int
     Machine_id: int
     timestart: str
-    timework: int
-    timewait: int
-    User_id: int
     worksorder: str
     partnum: str
-    Recipe_id: int
+    name: str   #Recipe name
     quantity: int
-    Stops_id: int
+    fname: str     #User fname
+    sname: str     #User sname
+    timework: int
+    timewait: int
+    reason: str

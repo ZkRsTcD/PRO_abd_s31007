@@ -3,9 +3,10 @@ import type { ProductionBatch } from "../typesProduction";
 
 interface ProductionTableProps {
     batches: ProductionBatch[];
+    formatSecondsToTime: (totalSeconds: number | null | undefined) => string;
 }
 
-const ProductionTable: React.FC<ProductionTableProps> = ({ batches }) => {
+const ProductionTable: React.FC<ProductionTableProps> = ({ batches, formatSecondsToTime }) => {
 
     return (
         <table>
@@ -34,15 +35,15 @@ const ProductionTable: React.FC<ProductionTableProps> = ({ batches }) => {
                         <tr key={batch.id}>
                             <td>{batch.id}</td>
                             <td>{batch.Machine_id}</td>
-                            <td>{batch.timestart}</td>
-                            <td>{batch.timework}</td>
-                            <td>{batch.timewait}</td>
-                            <td>{batch.User_id}</td> {/*Tu imię i nazwisko zamiast id*/}
+                            <td>{new Date(batch.timestart).toLocaleString('pl-PL')}</td>
                             <td>{batch.worksorder}</td>
                             <td>{batch.partnum}</td>
-                            <td>{batch.worksorder}</td>
+                            <td>{batch.name}</td>
                             <td>{batch.quantity}</td>
-                            <td>{batch.Stops_id}</td>
+                            <td>{batch.fname} {batch.sname}</td>
+                            <td>{formatSecondsToTime(batch.timework)}</td>
+                            <td>{formatSecondsToTime(batch.timewait)}</td>
+                            <td>{batch.reason}</td>
                         </tr>
                     ))
                 )}
