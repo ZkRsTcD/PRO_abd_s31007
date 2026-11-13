@@ -98,6 +98,18 @@ main{
     text-align: center;
   }
 
+
+  input {
+    background-color: rgb(32, 31, 31);
+    color: aliceblue;
+  }
+
+  select {
+    background-color: rgb(32, 31, 31);
+    color: aliceblue;
+  }
+
+
   .recipeDetails{
     position: fixed;
     border: 3px solid #241a79;

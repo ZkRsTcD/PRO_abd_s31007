@@ -1,0 +1,21 @@
+.topPanel {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 50px;
+    flex-wrap: wrap;
+    .datePanel {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    .worksAndPartFilterPanel {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+}

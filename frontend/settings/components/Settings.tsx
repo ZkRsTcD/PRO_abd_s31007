@@ -3,6 +3,7 @@ import SettingsUsers from "./SettingsUsers";
 import { useSettings } from "../useSettings";
 import SettingsRoles from "./SettingsRoles";
 import SettingsMenu from "./SettingsMenu";
+import PasswordSettings from "./PasswordSettings"
 import './Settings.css'
 
 
@@ -21,13 +22,12 @@ const Settings: React.FC = () => {
         assignedusersIds,
         permittedMenuIds,
         anyChangeInPermissions,
-        loadUsers,
-        loadRoles,
+        passwordInput,
         handleSelectRole,
-        loadMenu,
         handleToggleUser,
         handleToggleMenu,
-        handleSubmitChanges
+        handleSubmitChanges,
+        handlePasswordChange
     } = useSettings();
 
 
@@ -55,7 +55,7 @@ const Settings: React.FC = () => {
                 {loadingMenu && <p>Trwa pobieranie danych o menu z bazy...</p>}
                 {menuError && <p>Błąd połączenia: {menuError}</p>}
                 {!loadingMenu && !menuError && (
-                    <SettingsMenu menu={menu} permittedMenuIds={permittedMenuIds} onSelect={handleToggleMenu}/>
+                    <SettingsMenu menu={menu} permittedMenuIds={permittedMenuIds} onSelect={handleToggleMenu} selectedRoleId={selectedRoleId}/>
                 )}
             </div>
             <div className="SubmitButton">
@@ -63,6 +63,9 @@ const Settings: React.FC = () => {
                     <button onClick={handleSubmitChanges}>Zatwierdź zmiany</button>
                     
                 )}
+            </div>
+            <div className="OwnPasswordChangeArea"> {/*Dodać warunek możliwości zmiany hasła czy wykrywa zalogowanie użytkownika*/}
+                <PasswordSettings newPassword={passwordInput} onSubmit={handlePasswordChange}/>
             </div>
         </div>
     )

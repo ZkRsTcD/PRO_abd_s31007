@@ -13,3 +13,8 @@ class ProductionListItem(BaseModel):
     timework: int
     timewait: int
     reason: str
+
+class FilterParameters(BaseModel):
+    from_date: str | None = None
+    to_date: str | None = None
+    search: str | None = None

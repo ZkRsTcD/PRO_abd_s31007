@@ -23,7 +23,7 @@ const RecipeTable: React.FC<RecipeTableProps> = ({ recipes, onSelect }) => {
             <tbody>
                 {recipes.length === 0 ? (
                     <tr>
-                        <td>Brak rekordów w tabeli Recipes</td>
+                        <td>Brak rekordów w tabeli Recipe</td>
                     </tr>
                 ) : (
                     recipes.map(recipe => (

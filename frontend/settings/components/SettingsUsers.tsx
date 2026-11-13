@@ -35,7 +35,7 @@ const SettingsUsers: React.FC<UsersTableProps> = ({ users, assignedusersIds, onS
                             <td><input 
                             type="checkbox" name="assigned" value={user.id} 
                             checked={assignedusersIds.includes(user.id)} 
-                            disabled={selectedRoleId === 1} 
+                            disabled={selectedRoleId === 1 || selectedRoleId === null} 
                             onChange={() => onSelect(user.id)} 
                             style={{cursor: selectedRoleId === 1 ? 'not-allowed' : 'pointer'}}></input></td>
                             <td>{user.id}</td>

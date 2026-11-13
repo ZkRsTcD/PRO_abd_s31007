@@ -14,7 +14,7 @@ const ProductionTable: React.FC<ProductionTableProps> = ({ batches, formatSecond
                 <tr>
                     <th>ID</th>
                     <th>Numer Maszyny</th>
-                    <th>Data modyfikacji</th>
+                    <th>Data</th>
                     <th>WORKS NO</th>
                     <th>PART NO</th>
                     <th>Receptura</th>

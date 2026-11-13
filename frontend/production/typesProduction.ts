@@ -12,3 +12,10 @@ export interface ProductionBatch {
     timewait: number;
     reason: string;     //Stop reason
 }
+
+export interface FilterParameters {
+    fromDate?: string;
+    toDate?: string;
+    search?: string;
+}
+

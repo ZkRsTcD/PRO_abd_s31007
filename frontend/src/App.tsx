@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Recipes from '../recipes/components/Recipes'
 import Settings from '../settings/components/Settings'
 import Production from '../production/components/Production'
+import Alarms from '../alarms/components/Alarms'
 import './App.css'
 
 
@@ -18,7 +19,7 @@ const App: React.FC = () => {
         <button onClick={() => setCurrentModule('scrap')}>SCRAP</button>
         <button onClick={() => setCurrentModule('quality')}>QUALITY</button>
         <button onClick={() => setCurrentModule('recipes')} style={{color: 'aliceblue'}}>RECIPES</button>
-        <button onClick={() => setCurrentModule('alarms')}>ALARMS</button>
+        <button onClick={() => setCurrentModule('alarms')} style={{color: 'aliceblue'}}>ALARMS</button>
         <button onClick={() => setCurrentModule('settings')} style={{color: 'aliceblue'}}>SETTINGS</button>
         {/* To be changed for database menu version */}
         <div className='languageSelection'>
@@ -31,7 +32,7 @@ const App: React.FC = () => {
 
         {currentModule === 'production' && <Production />}
         {currentModule === 'recipes' && <Recipes />}
-
+        {currentModule === 'alarms' && <Alarms />}
         {currentModule === 'settings' && <Settings />}
       </main>
 

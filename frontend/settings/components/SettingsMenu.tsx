@@ -5,9 +5,10 @@ interface MenuTableProps {
     menu: Menu[];
     permittedMenuIds: number[];
     onSelect: (roleId: number) => void;
+    selectedRoleId: number|null;
 }
 
-const SettingsMenu: React.FC<MenuTableProps> = ({ menu, permittedMenuIds, onSelect }) => {
+const SettingsMenu: React.FC<MenuTableProps> = ({ menu, permittedMenuIds, onSelect, selectedRoleId }) => {
 
     return (
         <table>
@@ -20,7 +21,7 @@ const SettingsMenu: React.FC<MenuTableProps> = ({ menu, permittedMenuIds, onSele
                     menu.map(m => (
                         <tr key={m.id}>
                             <td>{m.title}</td>
-                            <td><input type="checkbox" name="permitted" value={m.id} checked={permittedMenuIds.includes(m.id)} onChange={() => onSelect(m.id)}></input></td>
+                            <td><input type="checkbox" name="permitted" disabled={selectedRoleId === null} value={m.id} checked={permittedMenuIds.includes(m.id)} onChange={() => onSelect(m.id)}></input></td>
                         </tr>
                     ))
                 )}

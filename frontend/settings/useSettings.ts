@@ -22,6 +22,8 @@ export function useSettings() {
     const [prevPermittedMenuIds, setPrevPermittedMenuIds] = useState<number[]>([]);
 
     const [anyChangeInPermissions, setAnyChangeInPermissions] = useState<boolean>(false);
+
+    const [passwordInput, setPasswordInput] = useState<string>('');
     
 
     const loadUsers = useCallback(async () => {
@@ -114,6 +116,10 @@ export function useSettings() {
         setAnyChangeInPermissions(false);
     }
 
+    const handlePasswordChange = async() => {
+
+    }
+
     useEffect(() => {
         loadUsers();
         loadRoles();
@@ -136,12 +142,11 @@ export function useSettings() {
         assignedusersIds,
         permittedMenuIds,
         anyChangeInPermissions,
-        loadUsers,
-        loadRoles,
+        passwordInput,
         handleSelectRole,
-        loadMenu,
         handleToggleUser,
         handleToggleMenu,
-        handleSubmitChanges
+        handleSubmitChanges,
+        handlePasswordChange
     }
 }
