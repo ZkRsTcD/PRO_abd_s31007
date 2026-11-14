@@ -2,7 +2,6 @@ import React from "react";
 import { useProduction } from "../useProduction"
 import ProductionTable from "./ProductionTable";
 import ProductionSearchFilterPanel from "./ProductionSearchFilterPanel";
-import './Production.css';
 
 const Production: React.FC = () => {
     const {
@@ -14,13 +13,15 @@ const Production: React.FC = () => {
         filteredWorksNo,
         filteredPartNo,
         searchedTerm,
+        filterLists,
         setFromDate,
         setToDate,
         setFilteredWorksNo,
         setFilteredPartNo,
         setSearchedTerm,
         formatSecondsToTime,
-        handleSearchAndFilter
+        handleSearchAndFilter,
+        formatDateToString
     } = useProduction();
 
     return (
@@ -34,12 +35,14 @@ const Production: React.FC = () => {
                         filteredWorksNo={filteredWorksNo} 
                         filteredPartNo={filteredPartNo}
                         searchedTerm={searchedTerm}
+                        filterLists={filterLists}
                         setFromDate={setFromDate}
                         setToDate={setToDate}
                         setFilteredWorksNo={setFilteredWorksNo}
                         setFilteredPartNo={setFilteredPartNo}
                         setSearchedTerm={setSearchedTerm}
-                        handleSearchAndFilter={handleSearchAndFilter}/> 
+                        handleSearchAndFilter={handleSearchAndFilter}
+                        formatDateToString={formatDateToString}/> 
                 )}
             </div>
             <div className="ProductionList">

@@ -21,7 +21,7 @@ const AlarmsTable: React.FC<AlarmsTableProps> = ({ alarmReports }) => {
             <tbody>
                 {alarmReports.length === 0 ? (
                     <tr>
-                        <td>Brak rekordów w bazie AlarmRaport</td>
+                        <td>Brak wyników</td>
                     </tr>
                 ) : (
                     alarmReports.map(alarmReport => (

@@ -1,12 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
 import { productionApi } from "./productionApi";
-import type { ProductionBatch, FilterParameters } from './typesProduction'
+import type { ProductionBatch, FilterParameters, FilterListsData } from './typesProduction'
 
 export function useProduction() {
     const [batches, setBatches] = useState<ProductionBatch[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
     const [error, setError] = useState<string|null>(null);
+
+    const [filterLists, setFilterLists] = useState<FilterListsData>({
+        worksNos: [],
+        partNos: []
+    })
 
     const [fromDate, setFromDate] = useState<Date|null>(new Date(2000, 1, 1, 1, 1));
     const [toDate, setToDate] = useState<Date|null>(new Date());
@@ -49,11 +54,14 @@ export function useProduction() {
     const handleSearchAndFilter = async () => {
         // console.log(fromDate);
         // console.log(searchedTerm);
+        setLoading(true);
         try{
             const data = await productionApi.getFilteredProduction({
                 fromDate: formatDateToString(fromDate), 
                 toDate: formatDateToString(toDate),
-                search: searchedTerm ? searchedTerm : undefined
+                search: searchedTerm ? searchedTerm : undefined,
+                worksNo: filteredWorksNo,
+                partNo: filteredPartNo
             })
             setBatches(data)
             setError(null)
@@ -72,9 +80,19 @@ export function useProduction() {
         return `${year}-${month}-${day}`;
     }
 
+    const getDataForFilters = useCallback(async () => {
+        try {
+            const data = await productionApi.getFilterListsData();
+            setFilterLists(data);
+        } catch (err) {
+            console.error("Nie udało się pobrać danych do pól filtrujących", err);
+        }
+    }, []);
+
 
     useEffect(() => {
-        loadProduction()
+        loadProduction();
+        getDataForFilters();
     }, [])
 
     return {
@@ -86,13 +104,15 @@ export function useProduction() {
         filteredWorksNo,
         filteredPartNo,
         searchedTerm,
+        filterLists,
         setFromDate,
         setToDate,
         setFilteredWorksNo,
         setFilteredPartNo,
         setSearchedTerm,
         formatSecondsToTime,
-        handleSearchAndFilter
+        handleSearchAndFilter,
+        formatDateToString
     }
 }
 

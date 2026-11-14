@@ -11,7 +11,9 @@ class ProductionRepository:
     def get_production(self, 
         from_date: str | None = None,
         to_date: str | None = None,
-        search: str | None = None
+        search: str | None = None,
+        worksNo: str | None = None,
+        partNo: str | None = None
     ) -> list[dict]:
         connection = self.get_connection()
         cursor = connection.cursor()
@@ -33,6 +35,14 @@ class ProductionRepository:
                 query += " AND p.timestart < DATEADD(day, 1, CAST(? AS DATE))"
                 parameters.append(to_date)
 
+            if worksNo:
+                query += " AND p.worksorder = ?"
+                parameters.append(worksNo)
+
+            if partNo:
+                query += " AND p.partnum = ?"
+                parameters.append(partNo)
+
             if search:
                 query += " AND (p.worksorder LIKE ? OR p.partnum LIKE ? OR r.name LIKE ? OR u.fname LIKE ? OR u.sname LIKE ? OR p.id LIKE ? OR s.reason LIKE ?)"
                 search_pattern = f"%{search}%"
@@ -50,5 +60,35 @@ class ProductionRepository:
         finally:
             cursor.close()
             connection.close()
+
+
+    def get_filters_worksorder(self) -> list[str]:
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        try:
+            cursor.execute("""
+                SELECT DISTINCT worksorder FROM MachineWorkCycle
+                ORDER BY worksorder ASC
+            """)
+            rows = cursor.fetchall()
+            return [row[0] for row in rows]
+        finally:
+            cursor.close()
+            connection.close()
+
+    def get_filters_partnum(self) -> list[str]:
+            connection = self.get_connection()
+            cursor = connection.cursor()
+            try:
+                cursor.execute("""
+                    SELECT DISTINCT partnum FROM MachineWorkCycle
+                    ORDER BY partnum ASC
+                """)
+                rows = cursor.fetchall()
+                return [row[0] for row in rows]
+            finally:
+                cursor.close()
+                connection.close()
+
 
     

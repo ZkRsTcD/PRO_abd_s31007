@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { ProductionBatch, FilterParameters } from "./typesProduction"
+import type { ProductionBatch, FilterParameters, FilterListsData } from "./typesProduction"
 
 const httpClient = axios.create({
     baseURL: 'http://localhost:8080',
@@ -13,25 +13,21 @@ export const productionApi = {
     },
     
     getFilteredProduction: async (filters: FilterParameters): Promise<ProductionBatch[]> => {
-        // const parameters = new URLSearchParams();
-
-        // if(filters.fromDate){
-        //     parameters.append('from_date', filters.fromDate);
-        // }
-        // if(filters.toDate){
-        //     parameters.append('to_date', filters.toDate);
-        // }
-        // if(filters.search){
-        //     parameters.append('search', filters.search);
-        // }
-
+        
         const { data } = await httpClient.get<ProductionBatch[]>('/production', {
             params: {
                 from_date: filters.fromDate,
                 to_date: filters.toDate,
-                search: filters.search
+                search: filters.search,
+                worksNo: filters.worksNo,
+                partNo: filters.partNo
             }});
         return data
+    },
+
+    getFilterListsData: async (): Promise<FilterListsData> => {
+        const { data } = await httpClient.get<FilterListsData>('/production/filter-data');
+        return data;
     }
 
 }

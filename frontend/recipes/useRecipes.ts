@@ -16,6 +16,10 @@ export function useRecipes() {
 
     const selectedRecipe = recipes.find(r => r.id === openedDetailsId) ?? null;
 
+    const [fromDate, setFromDate] = useState<Date|null>(new Date(2000, 1, 1, 1, 1));
+    const [toDate, setToDate] = useState<Date|null>(new Date());
+    const [searchedTerm, setSearchedTerm] = useState<string>("");
+
     const loadRecipes = useCallback(async () => {
         try {
             setLoading(true);
@@ -89,6 +93,32 @@ export function useRecipes() {
             alert('Wystąpił błąd podczas tworzenia receptury')
         }
     }
+
+    const handleSearchAndFilter = async () => {
+        try{
+            const data = await recipesApi.getFilteredRecipes({
+                fromDate: formatDateToString(fromDate), 
+                toDate: formatDateToString(toDate),
+                search: searchedTerm ? searchedTerm : undefined
+            })
+            setRecipes(data);
+            setOpenedDetailsId(null);
+            setError(null)
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Błąd pobierania danych');
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const formatDateToString = (date: Date|null): string|undefined => {
+        if (!date) return undefined;
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
     
     return {
         recipes,
@@ -97,12 +127,20 @@ export function useRecipes() {
         selectedRecipe,
         openedDetailsId,
         recipeDetails,
+        fromDate,
+        toDate,
+        searchedTerm,
         openDetails,
         closeDetails,
         updateField,
         saveRecipe,
         deleteRecipe,
-        duplicateRecipe
+        duplicateRecipe,
+        setFromDate,
+        setToDate,
+        setSearchedTerm,
+        handleSearchAndFilter,
+        formatDateToString
     }
 
 }

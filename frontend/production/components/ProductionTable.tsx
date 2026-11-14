@@ -28,7 +28,7 @@ const ProductionTable: React.FC<ProductionTableProps> = ({ batches, formatSecond
             <tbody>
                 {batches.length === 0 ? (
                     <tr>
-                        <td>Brak rekordów w tabeli</td>
+                        <td>Brak wyników</td>
                     </tr>
                 ) : (
                     batches.map(batch => (

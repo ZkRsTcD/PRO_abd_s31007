@@ -1,7 +1,7 @@
 import datetime
 
 from recipes.repository import RecipeRepository
-from recipes.models import RecipeDetails
+from recipes.models import RecipeDetails, FilterParameters
 
 
 #ignored_keys = {'id', 'Source', 'Machine_id', 'timestart', 'User_id', 'name'}
@@ -12,8 +12,8 @@ class RecipeService:
     def __init__(self, repository: RecipeRepository):
         self.repository = repository
 
-    def get_all_recipes(self) -> list[dict]:
-        return self.repository.get_all()
+    def get_recipes(self, filters: FilterParameters) -> list[dict]:
+        return self.repository.get_recipes(filters.from_date, filters.to_date, filters.search)
     
     def get_recipe_details(self, recipe_id: int) -> dict:
         recipe = self.repository.get_by_id(recipe_id)

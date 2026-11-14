@@ -13,11 +13,38 @@ class RecipeRepository:
     def get_connection(self):
         return pyodbc.connect(connection_string)
     
-    def get_all(self) -> list[dict]:
+    def get_recipes(self, 
+        from_date: str | None = None,
+        to_date: str | None = None,
+        search: str | None = None
+    ) -> list[dict]:
         connection = self.get_connection()
         cursor = connection.cursor()
         try:
-            cursor.execute("SELECT r.id, r.Machine_id, r.timestart, r.User_id, r.name, u.fname, u.sname FROM Recipe r JOIN [User] u ON User_id = u.id")
+            query = """
+                SELECT r.id, r.Machine_id, r.timestart, r.User_id, r.name, u.fname, u.sname FROM Recipe r 
+                JOIN [User] u ON User_id = u.id
+                WHERE 1=1
+            """
+            parameters = []
+
+            if from_date:
+                query += " AND r.timestart >= ?"
+                parameters.append(from_date)
+
+            if to_date:
+                query += " AND r.timestart < DATEADD(day, 1, CAST(? AS DATE))"
+                parameters.append(to_date)
+
+            if search:
+                query += " AND (r.id LIKE ? OR r.Machine_id LIKE ? OR r.name LIKE ? OR u.fname LIKE ? OR u.sname LIKE ?)"
+                search_pattern = f"%{search}%"
+                parameters.extend([search_pattern, search_pattern, search_pattern, search_pattern, search_pattern])
+
+            query += " ORDER BY r.timestart DESC"
+            
+
+            cursor.execute(query, parameters)
             rows = cursor.fetchall()
             columns = [column[0] for column in cursor.description]
             recipes_list = [dict(zip(columns, row)) for row in rows]

@@ -86,3 +86,9 @@ export interface RecipeDetailsForm{
     optCarbon: number;
     optCoreless: number;
 }
+
+export interface FilterParameters {
+    fromDate?: string;
+    toDate?: string;
+    search?: string;
+}

@@ -1,4 +1,5 @@
 import React from "react";
+import type { FilterListsData } from '../typesProduction'
 
 interface ProductionSearchFilterPanelProps {
     fromDate: Date|null;
@@ -6,12 +7,14 @@ interface ProductionSearchFilterPanelProps {
     filteredWorksNo: string;
     filteredPartNo: string;
     searchedTerm: string;
+    filterLists: FilterListsData;
     setFromDate: (date: Date|null) => void;
     setToDate: (date: Date|null) => void;
     setFilteredWorksNo: (option: string) => void;
     setFilteredPartNo: (option: string) => void;
     setSearchedTerm: (term: string) => void;
     handleSearchAndFilter: () => void;
+    formatDateToString: (date: Date|null) => string|undefined
 }
 
 const ProductionSearchFilterPanel: React.FC<ProductionSearchFilterPanelProps> = ({
@@ -20,38 +23,44 @@ const ProductionSearchFilterPanel: React.FC<ProductionSearchFilterPanelProps> = 
     filteredWorksNo,
     filteredPartNo,
     searchedTerm,
+    filterLists,
     setFromDate,
     setToDate,
     setFilteredWorksNo,
     setFilteredPartNo,
     setSearchedTerm,
-    handleSearchAndFilter
+    handleSearchAndFilter,
+    formatDateToString
 }) => {
 
     return (
         <div className="topPanel">
             <div className="datePanel">
-                <input type="date" onChange={(e) => setFromDate(e.target.valueAsDate)}/>
-                <input type="date" onChange={(e) => setToDate(e.target.valueAsDate)}/>
+                <input type="date" value={formatDateToString(fromDate)} onChange={(e) => setFromDate(e.target.valueAsDate)}/>
+                <input type="date" value={formatDateToString(toDate)} onChange={(e) => setToDate(e.target.valueAsDate)}/>
             </div>
-            <div className="worksAndPartFilterPanel">
-                <select >
-
-                    <option>Uno</option>
-                    <option>Dos</option>
-
+            <div className="FilterSelects">
+                <select value={filteredWorksNo} onChange={(e) => setFilteredWorksNo(e.target.value)}>
+                    <option value="">Wszystkie WORKS NO</option>
+                    {filterLists.worksNos.map((wo) => (
+                        <option key={wo} value={wo}>
+                            {wo}
+                        </option>
+                    ))}
                 </select>
-                <select >
-
-                    <option>Tres</option>
-                    <option>Cuatro</option>
-
+                <select value={filteredPartNo} onChange={(e) => setFilteredPartNo(e.target.value)}>
+                    <option value="">Wszystkie PART NO</option>
+                    {filterLists.partNos.map((pn) => (
+                        <option key={pn} value={pn}>
+                            {pn}
+                        </option>
+                    ))}
                 </select>
             </div>
-            <div className="searchPanel">
+            <div className="searchFilterPanel">
                 <input type="text" placeholder="Wpisz tekst" value={searchedTerm ?? ''} onChange={(e) => setSearchedTerm(e.target.value)}/>
             </div>
-            <div className="confirmButton">
+            <div className="confirmFilterButton">
                 <button onClick={handleSearchAndFilter}>Szukaj</button>
             </div>
         </div>

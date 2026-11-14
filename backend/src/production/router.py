@@ -8,9 +8,13 @@ router = APIRouter()
 
 service = ProductionService(ProductionRepository())
 
+@router.get("/production/filter-data")
+def get_filters_data():
+    return service.get_filters_data()
 
 @router.get("/production")
 def get_production(filters: FilterParameters = Depends()):
-    print("tak")
+    #print("ttt")
     return service.get_production(filters)
+
 

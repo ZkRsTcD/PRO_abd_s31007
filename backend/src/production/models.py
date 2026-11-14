@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List
 
 class ProductionListItem(BaseModel):
     id: int
@@ -18,3 +19,9 @@ class FilterParameters(BaseModel):
     from_date: str | None = None
     to_date: str | None = None
     search: str | None = None
+    worksNo: str | None = None
+    partNo: str | None = None
+
+class FilterListsData(BaseModel):
+    worksNos: List[str]
+    partNos: List[str]

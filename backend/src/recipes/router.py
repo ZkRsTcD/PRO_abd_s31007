@@ -1,8 +1,8 @@
-from fastapi import APIRouter, HTTPException, Body
+from fastapi import APIRouter, HTTPException, Body, Depends
 
 from recipes.service import RecipeService
 from recipes.repository import RecipeRepository
-from recipes.models import RecipeDetails, SuccessResponse
+from recipes.models import RecipeDetails, SuccessResponse, FilterParameters
 
 
 router = APIRouter()
@@ -11,8 +11,8 @@ service = RecipeService(RecipeRepository())
 
 
 @router.get("/recipes")
-def get_recipes():
-    return service.get_all_recipes()
+def get_recipes(filters: FilterParameters = Depends()):
+    return service.get_recipes(filters)
 
 @router.get("/recipe/details/{recipe_id}")
 def get_recipe_details(recipe_id: int):

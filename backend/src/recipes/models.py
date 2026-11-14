@@ -56,4 +56,9 @@ class SuccessResponse(BaseModel):
 
 class RecipeUpdateRequest():
     id: int
+
+class FilterParameters(BaseModel):
+    from_date: str | None = None
+    to_date: str | None = None
+    search: str | None = None
     

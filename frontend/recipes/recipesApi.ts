@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Recipe, RecipeDetails } from './types'
+import type { Recipe, RecipeDetails, FilterParameters } from './types'
 
 const httpClient = axios.create({
     baseURL: 'http://localhost:8080',
@@ -27,5 +27,16 @@ export const recipesApi = {
 
     create: async (data: RecipeDetails): Promise<void> => {
         await httpClient.post('/recipes', data);
+    },
+
+    getFilteredRecipes: async (filters: FilterParameters): Promise<Recipe[]> => {
+        const { data } = await httpClient.get<Recipe[]>('/recipes', {
+            params: {
+                from_date: filters.fromDate,
+                to_date: filters.toDate,
+                search: filters.search
+            }
+        });
+        return data;
     }
 };

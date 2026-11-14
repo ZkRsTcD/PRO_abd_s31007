@@ -17,13 +17,13 @@ def get_users():
 def get_roles():
     return service.get_all_roles()
 
-@router.get("/settings/menu")
-def get_menu():
-    return service.get_whole_menu()
-
 @router.get("/settings/menu/{role_id}")
 def get_permitted_menu(role_id: int):
     return service.get_permitted_menu(role_id)
+
+@router.get("/settings/menu")
+def get_menu():
+    return service.get_whole_menu()
 
 @router.get("/settings/assignedusers/{role_id}")
 def get_assigned_users(role_id: int):
