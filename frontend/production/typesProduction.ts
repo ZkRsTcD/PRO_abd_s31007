@@ -19,6 +19,8 @@ export interface FilterParameters {
     search?: string;
     worksNo?: string;
     partNo?: string;
+    offset: number;
+    limit: number;
 }
 
 export interface FilterListsData {

@@ -13,13 +13,15 @@ class ProductionRepository:
         to_date: str | None = None,
         search: str | None = None,
         worksNo: str | None = None,
-        partNo: str | None = None
+        partNo: str | None = None,
+        offset: int = 0,
+        limit: int = 50
     ) -> list[dict]:
         connection = self.get_connection()
         cursor = connection.cursor()
         try:
             query = """
-                SELECT TOP 50 p.id, p.Machine_id, p.timestart, p.worksorder, p.partnum, r.name, p.quantity, u.fname, u.sname, p.timework, p.timewait, s.reason FROM MachineWorkCycle p
+                SELECT p.id, p.Machine_id, p.timestart, p.worksorder, p.partnum, r.name, p.quantity, u.fname, u.sname, p.timework, p.timewait, s.reason FROM MachineWorkCycle p
                 JOIN Recipe r ON p.Recipe_id = r.id
                 JOIN [User] u ON p.User_id = u.id
                 LEFT JOIN Stops s ON p.Stops_id = s.id
@@ -49,6 +51,12 @@ class ProductionRepository:
                 parameters.extend([search_pattern, search_pattern, search_pattern, search_pattern, search_pattern, search_pattern, search_pattern])
 
             query += " ORDER BY p.timestart DESC"
+
+            query += " OFFSET ? ROWS"
+            parameters.append(offset)
+
+            query += " FETCH NEXT ? ROWS ONLY"
+            parameters.append(limit)
 
             #print(query)
 

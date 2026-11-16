@@ -13,8 +13,9 @@ interface ProductionSearchFilterPanelProps {
     setFilteredWorksNo: (option: string) => void;
     setFilteredPartNo: (option: string) => void;
     setSearchedTerm: (term: string) => void;
-    handleSearchAndFilter: () => void;
-    formatDateToString: (date: Date|null) => string|undefined
+    loadProductionData: () => void;
+    formatDateToString: (date: Date|null) => string|undefined;
+    setPage: (value: number) => void;
 }
 
 const ProductionSearchFilterPanel: React.FC<ProductionSearchFilterPanelProps> = ({
@@ -29,8 +30,9 @@ const ProductionSearchFilterPanel: React.FC<ProductionSearchFilterPanelProps> = 
     setFilteredWorksNo,
     setFilteredPartNo,
     setSearchedTerm,
-    handleSearchAndFilter,
-    formatDateToString
+    loadProductionData,
+    formatDateToString,
+    setPage
 }) => {
 
     return (
@@ -61,7 +63,7 @@ const ProductionSearchFilterPanel: React.FC<ProductionSearchFilterPanelProps> = 
                 <input type="text" placeholder="Wpisz tekst" value={searchedTerm ?? ''} onChange={(e) => setSearchedTerm(e.target.value)}/>
             </div>
             <div className="confirmFilterButton">
-                <button onClick={handleSearchAndFilter}>Szukaj</button>
+                <button onClick={() => {setPage(1); loadProductionData()}}>Szukaj</button>
             </div>
         </div>
     )

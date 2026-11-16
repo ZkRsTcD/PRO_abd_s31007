@@ -6,7 +6,7 @@ class ProductionService:
             self.repository = repository
 
     def get_production(self, filters: FilterParameters) -> list[dict]:
-          return self.repository.get_production(filters.from_date, filters.to_date, filters.search, filters.worksNo, filters.partNo)
+          return self.repository.get_production(filters.from_date, filters.to_date, filters.search, filters.worksNo, filters.partNo, filters.offset, filters.limit)
 
     def get_filters_data(self) -> FilterListsData:
           return FilterListsData(

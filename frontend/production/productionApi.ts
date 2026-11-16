@@ -20,7 +20,9 @@ export const productionApi = {
                 to_date: filters.toDate,
                 search: filters.search,
                 worksNo: filters.worksNo,
-                partNo: filters.partNo
+                partNo: filters.partNo,
+                offset: filters.offset,
+                limit: filters.limit
             }});
         return data
     },

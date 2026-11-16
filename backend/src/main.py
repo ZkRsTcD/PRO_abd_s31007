@@ -13,6 +13,7 @@ from production.router import router as production_router
 from recipes.router import router as recipes_router
 from settings.router import router as settings_router
 from alarms.router import router as alarms_router
+from liveStatus.router import router as live_status_router
 
 
 app = FastAPI()
@@ -55,6 +56,7 @@ app.include_router(production_router, tags=["Produkcja"])
 app.include_router(recipes_router, tags=["Receptury"])
 app.include_router(settings_router, tags=["Ustawienia"])
 app.include_router(alarms_router, tags=["Alarmy"])
+app.include_router(live_status_router, tags=["LiveStatus"])
 
 
 

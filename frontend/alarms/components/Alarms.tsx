@@ -43,6 +43,9 @@ const Alarms: React.FC = () => {
                         formatDateToString={formatDateToString}/> 
                 )}
             </div>
+            <div className="PaginationPanel">
+                
+            </div>
             <div className="AlarmsList">
                 {loading && <p>Trwa pobieranie danych z bazy...</p>}
                 {error && <p>Błąd połączenia: {error}</p>}

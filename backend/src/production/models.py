@@ -21,6 +21,8 @@ class FilterParameters(BaseModel):
     search: str | None = None
     worksNo: str | None = None
     partNo: str | None = None
+    offset: int = 0
+    limit: int = 50
 
 class FilterListsData(BaseModel):
     worksNos: List[str]

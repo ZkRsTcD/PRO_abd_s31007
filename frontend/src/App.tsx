@@ -3,6 +3,7 @@ import Recipes from '../recipes/components/Recipes'
 import Settings from '../settings/components/Settings'
 import Production from '../production/components/Production'
 import Alarms from '../alarms/components/Alarms'
+import LiveStatus from '../liveStatus/components/LiveStatus'
 import './App.css'
 
 
@@ -29,8 +30,9 @@ const App: React.FC = () => {
       </aside>
 
       <main>
-
+        {currentModule === 'liveStatus' && <LiveStatus />}
         {currentModule === 'production' && <Production />}
+
         {currentModule === 'recipes' && <Recipes />}
         {currentModule === 'alarms' && <Alarms />}
         {currentModule === 'settings' && <Settings />}
