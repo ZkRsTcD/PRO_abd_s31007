@@ -91,4 +91,6 @@ export interface FilterParameters {
     fromDate?: string;
     toDate?: string;
     search?: string;
+    offset: number;
+    limit: number;
 }

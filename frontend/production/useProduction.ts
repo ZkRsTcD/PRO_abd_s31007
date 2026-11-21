@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { productionApi } from "./productionApi";
 import type { ProductionBatch, FilterParameters, FilterListsData } from './typesProduction'
+import { formatSecondsToTime, formatDateToString } from '../shared/formatters'
+
 
 export function useProduction() {
     const [batches, setBatches] = useState<ProductionBatch[]>([]);
@@ -13,24 +15,24 @@ export function useProduction() {
         partNos: []
     })
 
-    const [fromDate, setFromDate] = useState<Date|null>(new Date(2000, 1, 1, 1, 1));
+    const [fromDate, setFromDate] = useState<Date|null>(new Date(2000, 0, 1));
     const [toDate, setToDate] = useState<Date|null>(new Date());
     const [filteredWorksNo, setFilteredWorksNo] = useState<string>("");
     const [filteredPartNo, setFilteredPartNo] = useState<string>("");
     const [searchedTerm, setSearchedTerm] = useState<string>("");
-
+    
     const [pageSize, setPageSize] = useState<number>(50);
     const [page, setPage] = useState<number>(1);
     const [hasMore, setHasMore] = useState<boolean>(true);
-
-
-    const loadProductionData = async (customOffset?: number, customLimit?: number) => {
+    
+    
+    const loadProductionData = useCallback(async (customOffset?: number, customLimit?: number) => {
         setLoading(true);
         try{
             const currentOffset = customOffset !== undefined ? customOffset : (page - 1) * pageSize;
-
+            
             const limitToUse = customLimit !== undefined ? customLimit : pageSize;
-
+            
             const data = await productionApi.getFilteredProduction({
                 fromDate: formatDateToString(fromDate), 
                 toDate: formatDateToString(toDate),
@@ -55,31 +57,7 @@ export function useProduction() {
         } finally {
             setLoading(false);
         }
-    }
-    
-    const formatSecondsToTime = (totalSeconds: number | null | undefined): string => {
-        if (totalSeconds === null || totalSeconds === undefined || isNaN(totalSeconds)) {
-            return "-";
-        }
-        const seconds = totalSeconds % 60;
-        const minutes = Math.floor((totalSeconds % 3600) / 60);
-        const hours = Math.floor(totalSeconds / 3600);
-
-        const pad = (num: number) => String(num).padStart(2, '0');
-
-        if (hours > 0) {
-            return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
-        }
-        return `${pad(minutes)}:${pad(seconds)}`;
-    }
-
-    const formatDateToString = (date: Date|null): string|undefined => {
-        if (!date) return undefined;
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
+    }, [fromDate, toDate, searchedTerm, filteredWorksNo, filteredPartNo, page, pageSize]);
 
     const getDataForFilters = useCallback(async () => {
         try {
@@ -103,7 +81,7 @@ export function useProduction() {
     useEffect(() => {
         loadProductionData();
         getDataForFilters();
-    }, [getDataForFilters])
+    }, [])
 
     return {
         batches,

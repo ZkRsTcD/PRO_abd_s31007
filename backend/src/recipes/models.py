@@ -61,4 +61,6 @@ class FilterParameters(BaseModel):
     from_date: str | None = None
     to_date: str | None = None
     search: str | None = None
+    offset: int = 0
+    limit: int = 50
     

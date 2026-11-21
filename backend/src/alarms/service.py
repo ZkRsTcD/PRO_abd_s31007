@@ -8,7 +8,7 @@ class AlarmsService:
         self.repository = repository
 
     def get_all_alarmReports(self, filters: FilterParameters) -> list[dict]:
-        return self.repository.get_alarms(filters.from_date, filters.to_date, filters.machine, filters.operator)
+        return self.repository.get_alarms(filters.from_date, filters.to_date, filters.machine, filters.operator, filters.offset, filters.limit)
 
     def get_filters_data(self) -> FilterListsData:
         return FilterListsData(

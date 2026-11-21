@@ -7,7 +7,7 @@ interface RecipeSearchFilterPanelProps {
     setFromDate: (date: Date|null) => void;
     setToDate: (date: Date|null) => void;
     setSearchedTerm: (term: string) => void;
-    handleSearchAndFilter: () => void;
+    loadRecipes: () => void;
     formatDateToString: (date: Date|null) => string|undefined
 }
 
@@ -18,7 +18,7 @@ const RecipeSearchFilterPanel: React.FC<RecipeSearchFilterPanelProps> = ({
     setFromDate,
     setToDate,
     setSearchedTerm,
-    handleSearchAndFilter,
+    loadRecipes,
     formatDateToString
 }) => {
     return (
@@ -31,7 +31,7 @@ const RecipeSearchFilterPanel: React.FC<RecipeSearchFilterPanelProps> = ({
                 <input type="text" placeholder="Wpisz tekst" value={searchedTerm ?? ''} onChange={(e) => setSearchedTerm(e.target.value)}/>
             </div>
             <div className="confirmButton">
-                <button onClick={handleSearchAndFilter}>Szukaj</button>
+                <button onClick={loadRecipes}>Szukaj</button>
             </div>
         </div>
     )

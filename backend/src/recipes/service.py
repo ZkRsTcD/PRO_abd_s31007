@@ -13,7 +13,7 @@ class RecipeService:
         self.repository = repository
 
     def get_recipes(self, filters: FilterParameters) -> list[dict]:
-        return self.repository.get_recipes(filters.from_date, filters.to_date, filters.search)
+        return self.repository.get_recipes(filters.from_date, filters.to_date, filters.search, filters.offset, filters.limit)
     
     def get_recipe_details(self, recipe_id: int) -> dict:
         recipe = self.repository.get_by_id(recipe_id)

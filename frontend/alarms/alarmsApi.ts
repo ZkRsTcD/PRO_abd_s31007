@@ -7,10 +7,10 @@ const httpClient = axios.create({
 })
 
 export const alarmsApi = {
-    getAlarms: async (): Promise<AlarmRaport[]> => {
-        const { data } = await httpClient.get<AlarmRaport[]>('/alarms');
-        return data;
-    },
+    // getAlarms: async (): Promise<AlarmRaport[]> => {
+    //     const { data } = await httpClient.get<AlarmRaport[]>('/alarms');
+    //     return data;
+    // },
 
     getFilteredAlarms: async (filters: FilterParameters): Promise<AlarmRaport[]> => {
         const { data } = await httpClient.get<AlarmRaport[]>('/alarms', {
@@ -18,7 +18,9 @@ export const alarmsApi = {
                 from_date: filters.fromDate,
                 to_date: filters.toDate,
                 machine: filters.machine,
-                operator: filters.operator
+                operator: filters.operator,
+                offset: filters.offset,
+                limit: filters.limit
             }
         });
         return data;

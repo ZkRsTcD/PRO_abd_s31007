@@ -11,7 +11,9 @@ class AlarmsRepository:
         from_date: str | None = None,
         to_date: str | None = None,
         machine: str | None = None,
-        operator: str | None = None
+        operator: str | None = None,
+        offset: int = 0,
+        limit: int = 50
     ) -> list[dict]:
         connection = self.get_connection()
         cursor = connection.cursor()
@@ -42,6 +44,12 @@ class AlarmsRepository:
                 parameters.append(operator)
 
             query += " ORDER BY ar.timestart DESC"
+
+            query += " OFFSET ? ROWS"
+            parameters.append(offset)
+            
+            query += " FETCH NEXT ? ROWS ONLY"
+            parameters.append(limit)
 
             cursor.execute(query, parameters)
             rows = cursor.fetchall()

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { recipesApi } from "./recipesApi";
 import type { Recipe, RecipeDetails } from './types'
+import { formatDateToString } from '../shared/formatters'
 
 function toFormData(details: RecipeDetails): RecipeDetails {
     const copy: any = { ...details };
@@ -20,22 +21,43 @@ export function useRecipes() {
     const [toDate, setToDate] = useState<Date|null>(new Date());
     const [searchedTerm, setSearchedTerm] = useState<string>("");
 
-    const loadRecipes = useCallback(async () => {
+    const [pageSize, setPageSize] = useState<number>(50);
+    const [page, setPage] = useState<number>(1);
+    const [hasMore, setHasMore] = useState<boolean>(true);
+
+    const loadRecipes = useCallback(async (customOffset?: number, customLimit?: number) => {
         try {
             setLoading(true);
-            const data = await recipesApi.getAll();
-            setRecipes(data);
+
+            const currentOffset = customOffset !== undefined ? customOffset : (page - 1) * pageSize;
+            
+            const limitToUse = customLimit !== undefined ? customLimit : pageSize;
+
+            const data = await recipesApi.getFilteredRecipes({
+                fromDate: formatDateToString(fromDate), 
+                toDate: formatDateToString(toDate),
+                search: searchedTerm ? searchedTerm : undefined,
+                offset: currentOffset,
+                limit: limitToUse + 1
+            })
+            if (data.length > limitToUse) {
+                setHasMore(true);
+                setRecipes(data.slice(0, limitToUse));
+            }else {
+                setHasMore(false);
+                setRecipes(data)
+            }
             setError(null);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Błąd pobierania danych');
         } finally {
             setLoading(false);
         }
-    }, []);
+    }, [fromDate, toDate, searchedTerm, page, pageSize]);
 
     useEffect(() => {
         loadRecipes();
-    }, [loadRecipes]);
+    }, []);
     
     useEffect(() => {
         if(openedDetailsId === null) {
@@ -94,30 +116,30 @@ export function useRecipes() {
         }
     }
 
-    const handleSearchAndFilter = async () => {
-        try{
-            const data = await recipesApi.getFilteredRecipes({
-                fromDate: formatDateToString(fromDate), 
-                toDate: formatDateToString(toDate),
-                search: searchedTerm ? searchedTerm : undefined
-            })
-            setRecipes(data);
-            setOpenedDetailsId(null);
-            setError(null)
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'Błąd pobierania danych');
-        } finally {
-            setLoading(false);
-        }
-    }
+    // const handleSearchAndFilter = async () => {
+    //     try{
+    //         const data = await recipesApi.getFilteredRecipes({
+    //             fromDate: formatDateToString(fromDate), 
+    //             toDate: formatDateToString(toDate),
+    //             search: searchedTerm ? searchedTerm : undefined
+    //         })
+    //         setRecipes(data);
+    //         setOpenedDetailsId(null);
+    //         setError(null)
+    //     } catch (err) {
+    //         setError(err instanceof Error ? err.message : 'Błąd pobierania danych');
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // }
 
-    const formatDateToString = (date: Date|null): string|undefined => {
-        if (!date) return undefined;
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
+    const handlePagination = async (forward: boolean) => {
+        const newPage = forward ? page + 1 : Math.max(page - 1, 1);
+        if (!forward && page === 1) return;
+        setPage(newPage);
+        const offset = (newPage - 1) * pageSize;
+        await loadRecipes(offset);
+    };
 
     
     return {
@@ -130,6 +152,9 @@ export function useRecipes() {
         fromDate,
         toDate,
         searchedTerm,
+        pageSize,
+        page,
+        hasMore,
         openDetails,
         closeDetails,
         updateField,
@@ -139,8 +164,11 @@ export function useRecipes() {
         setFromDate,
         setToDate,
         setSearchedTerm,
-        handleSearchAndFilter,
-        formatDateToString
+        loadRecipes,
+        formatDateToString,
+        handlePagination,
+        setPage,
+        setPageSize
     }
 
 }

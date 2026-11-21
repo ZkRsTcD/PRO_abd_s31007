@@ -14,11 +14,11 @@ const App: React.FC = () => {
     <div className = "wholeAppContainer">
       <aside>
         <h2>PROTOTYP</h2>
-        <button onClick={() => setCurrentModule('liveStatus')}>LIVE STATUS</button>
+        <button onClick={() => setCurrentModule('liveStatus')} style={{color: 'aliceblue'}}>LIVE STATUS</button>
         <button onClick={() => setCurrentModule('production')} style={{color: 'aliceblue'}}>PRODUCTION</button>
         <button onClick={() => setCurrentModule('stoppage')}>STOPPAGE</button>
         <button onClick={() => setCurrentModule('scrap')}>SCRAP</button>
-        <button onClick={() => setCurrentModule('quality')}>QUALITY</button>
+        <button onClick={() => setCurrentModule('quality')} style={{color: 'aliceblue'}}>QUALITY</button>
         <button onClick={() => setCurrentModule('recipes')} style={{color: 'aliceblue'}}>RECIPES</button>
         <button onClick={() => setCurrentModule('alarms')} style={{color: 'aliceblue'}}>ALARMS</button>
         <button onClick={() => setCurrentModule('settings')} style={{color: 'aliceblue'}}>SETTINGS</button>

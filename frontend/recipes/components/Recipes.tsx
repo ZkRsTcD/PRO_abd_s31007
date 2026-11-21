@@ -15,6 +15,9 @@ const Recipes: React.FC = () => {
     fromDate,
     toDate,
     searchedTerm,
+    pageSize,
+    page,
+    hasMore,
     openDetails,
     closeDetails,
     updateField,
@@ -24,8 +27,11 @@ const Recipes: React.FC = () => {
     setFromDate,
     setToDate,
     setSearchedTerm,
-    handleSearchAndFilter,
-    formatDateToString
+    loadRecipes,
+    formatDateToString,
+    handlePagination,
+    setPage,
+    setPageSize
   } = useRecipes();
 
   return (
@@ -42,9 +48,20 @@ const Recipes: React.FC = () => {
             setFromDate={setFromDate}
             setToDate={setToDate}
             setSearchedTerm={setSearchedTerm}
-            handleSearchAndFilter={handleSearchAndFilter}
+            loadRecipes={() => {setPage(1); loadRecipes(0, pageSize)}}
             formatDateToString={formatDateToString}/>
         )}
+      </div>
+      <div className="PaginationPanel">
+        <button name="GoBack" onClick={() => handlePagination(false)} disabled={page === 1 || loading}>{'<<'}</button>
+        <select value={pageSize} onChange={(e) => { setPageSize(Number(e.target.value)); setPage(1); loadRecipes(0, Number(e.target.value))}}>
+          <option value={25}>25</option>
+          <option value={50}>50</option>
+          <option value={100}>100</option>
+          <option value={200}>200</option>
+          <option value={500}>500</option>
+        </select>
+        <button name="GoForward" onClick={() => handlePagination(true)} disabled={!hasMore || loading}>{'>>'}</button>
       </div>
       <div className="RecipeTable">
         {loading && <p>Trwa pobieranie danych z bazy...</p>}

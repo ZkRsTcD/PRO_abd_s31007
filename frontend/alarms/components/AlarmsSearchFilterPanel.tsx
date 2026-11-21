@@ -11,7 +11,7 @@ interface AlarmsSearchFilterPanelProps {
     setToDate: (date: Date|null) => void;
     setFilteredMachine: (option: string) => void;
     setFilteredOperator: (option: string) => void;
-    handleSearchAndFilter: () => void;
+    loadAlarmReports: () => void;
     formatDateToString: (date: Date|null) => string|undefined
 }
 
@@ -25,7 +25,7 @@ const AlarmsSearchFilterPanel: React.FC<AlarmsSearchFilterPanelProps> = ({
     setToDate,
     setFilteredMachine,
     setFilteredOperator,
-    handleSearchAndFilter,
+    loadAlarmReports,
     formatDateToString
 }) => {
 
@@ -54,7 +54,7 @@ const AlarmsSearchFilterPanel: React.FC<AlarmsSearchFilterPanelProps> = ({
                 </select>
             </div>
             <div className="confirmFilterButton">
-                <button onClick={handleSearchAndFilter}>Szukaj</button>
+                <button onClick={loadAlarmReports}>Szukaj</button>
             </div>
         </div>
     )

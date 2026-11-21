@@ -34,7 +34,9 @@ export const recipesApi = {
             params: {
                 from_date: filters.fromDate,
                 to_date: filters.toDate,
-                search: filters.search
+                search: filters.search,
+                offset: filters.offset,
+                limit: filters.limit
             }
         });
         return data;

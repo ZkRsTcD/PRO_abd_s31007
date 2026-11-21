@@ -16,7 +16,9 @@ class RecipeRepository:
     def get_recipes(self, 
         from_date: str | None = None,
         to_date: str | None = None,
-        search: str | None = None
+        search: str | None = None,
+        offset: int = 0,
+        limit: int = 50
     ) -> list[dict]:
         connection = self.get_connection()
         cursor = connection.cursor()
@@ -42,6 +44,12 @@ class RecipeRepository:
                 parameters.extend([search_pattern, search_pattern, search_pattern, search_pattern, search_pattern])
 
             query += " ORDER BY r.timestart DESC"
+
+            query += " OFFSET ? ROWS"
+            parameters.append(offset)
+            
+            query += " FETCH NEXT ? ROWS ONLY"
+            parameters.append(limit)
             
 
             cursor.execute(query, parameters)

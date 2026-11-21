@@ -14,6 +14,8 @@ class FilterParameters(BaseModel):
     to_date: str | None = None
     machine: str | None = None
     operator: str | None = None
+    offset: int = 0
+    limit: int = 50
 
 class FilterListsData(BaseModel):
     machines: List[str]

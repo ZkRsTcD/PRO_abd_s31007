@@ -12,6 +12,8 @@ export interface FilterParameters {
     toDate?: string;
     machine?: string;
     operator?: string;
+    offset: number;
+    limit: number;
 }
 
 export interface FilterListsData {

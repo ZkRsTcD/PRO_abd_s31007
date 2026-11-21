@@ -7,10 +7,10 @@ const httpClient = axios.create({
 })
 
 export const productionApi = {
-    getProduction: async (): Promise<ProductionBatch[]> => {
-        const { data } = await httpClient.get<ProductionBatch[]>('/production');
-        return data;
-    },
+    // getProduction: async (): Promise<ProductionBatch[]> => {
+    //     const { data } = await httpClient.get<ProductionBatch[]>('/production');
+    //     return data;
+    // },
     
     getFilteredProduction: async (filters: FilterParameters): Promise<ProductionBatch[]> => {
         
