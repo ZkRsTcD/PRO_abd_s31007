@@ -34,7 +34,7 @@ const ProductionTable: React.FC<ProductionTableProps> = ({ batches, formatSecond
                     batches.map(batch => (
                         <tr key={batch.id}>
                             <td>{batch.id}</td>
-                            <td>{batch.Machine_id}</td>
+                            <td>{batch.machine_code}</td>
                             <td>{new Date(batch.timestart).toLocaleString('pl-PL')}</td>
                             <td>{batch.worksorder}</td>
                             <td>{batch.partnum}</td>

@@ -21,9 +21,10 @@ class ProductionRepository:
         cursor = connection.cursor()
         try:
             query = """
-                SELECT p.id, p.Machine_id, p.timestart, p.worksorder, p.partnum, r.name, p.quantity, u.fname, u.sname, p.timework, p.timewait, s.reason FROM MachineWorkCycle p
+                SELECT p.id, m.machine_code, p.timestart, p.worksorder, p.partnum, r.name, p.quantity, u.fname, u.sname, p.timework, p.timewait, s.reason FROM MachineWorkCycle p
                 JOIN Recipe r ON p.Recipe_id = r.id
                 JOIN [User] u ON p.User_id = u.id
+                JOIN Machine m ON p.Machine_id = m.id
                 LEFT JOIN Stops s ON p.Stops_id = s.id
                 WHERE 1=1
             """
@@ -46,9 +47,9 @@ class ProductionRepository:
                 parameters.append(partNo)
 
             if search:
-                query += " AND (p.worksorder LIKE ? OR p.partnum LIKE ? OR r.name LIKE ? OR u.fname LIKE ? OR u.sname LIKE ? OR p.id LIKE ? OR s.reason LIKE ?)"
+                query += " AND (p.worksorder LIKE ? OR p.partnum LIKE ? OR r.name LIKE ? OR u.fname LIKE ? OR u.sname LIKE ? OR p.id LIKE ? OR s.reason LIKE ? OR m.machine_code LIKE ?)"
                 search_pattern = f"%{search}%"
-                parameters.extend([search_pattern, search_pattern, search_pattern, search_pattern, search_pattern, search_pattern, search_pattern])
+                parameters.extend([search_pattern, search_pattern, search_pattern, search_pattern, search_pattern, search_pattern, search_pattern, search_pattern])
 
             query += " ORDER BY p.timestart DESC"
 

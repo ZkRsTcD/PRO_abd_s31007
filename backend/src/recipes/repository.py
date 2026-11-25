@@ -24,8 +24,9 @@ class RecipeRepository:
         cursor = connection.cursor()
         try:
             query = """
-                SELECT r.id, r.Machine_id, r.timestart, r.User_id, r.name, u.fname, u.sname FROM Recipe r 
+                SELECT r.id, m.machine_code, r.timestart, r.User_id, r.name, u.fname, u.sname FROM Recipe r 
                 JOIN [User] u ON User_id = u.id
+                JOIN Machine m ON r.Machine_id = m.id
                 WHERE 1=1
             """
             parameters = []
@@ -39,7 +40,7 @@ class RecipeRepository:
                 parameters.append(to_date)
 
             if search:
-                query += " AND (r.id LIKE ? OR r.Machine_id LIKE ? OR r.name LIKE ? OR u.fname LIKE ? OR u.sname LIKE ?)"
+                query += " AND (r.id LIKE ? OR m.machine_code LIKE ? OR r.name LIKE ? OR u.fname LIKE ? OR u.sname LIKE ?)"
                 search_pattern = f"%{search}%"
                 parameters.extend([search_pattern, search_pattern, search_pattern, search_pattern, search_pattern])
 

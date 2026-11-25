@@ -1,6 +1,6 @@
 export interface ProductionBatch {
     id: number;
-    Machine_id: number;
+    machine_code: string;
     timestart: string;
     worksorder: string;
     partnum: string;

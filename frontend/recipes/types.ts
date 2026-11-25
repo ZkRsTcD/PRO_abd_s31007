@@ -1,7 +1,7 @@
 
 export interface Recipe {
     id: number;
-    Machine_id: number;
+    machine_code: string;
     timestart: string; //Dates comes through JSON as strings
     User_id: number;
     name: string;
@@ -12,7 +12,7 @@ export interface Recipe {
 export interface RecipeDetails{
     id: number;
     source: number;
-    Machine_id: number;
+    machine_code: string;
     timestart: string;
     User_id: number;
     name: string
@@ -51,7 +51,7 @@ export interface RecipeDetails{
 export interface RecipeDetailsForm{
     // id: number;
     // source: number;
-    // Machine_id: number;
+    // machine_code: string;
     // timestart: string;
     // User_id: number;
     // name: string

@@ -1,4 +1,5 @@
 import React from "react";
+import { useLanguage } from "../../i18n/LanguageContext";
 
 interface RecipeSearchFilterPanelProps {
     fromDate: Date|null;
@@ -21,6 +22,9 @@ const RecipeSearchFilterPanel: React.FC<RecipeSearchFilterPanelProps> = ({
     loadRecipes,
     formatDateToString
 }) => {
+
+    const { t } = useLanguage();
+
     return (
         <div className="topPanel">
             <div className="datePanel">
@@ -31,7 +35,7 @@ const RecipeSearchFilterPanel: React.FC<RecipeSearchFilterPanelProps> = ({
                 <input type="text" placeholder="Wpisz tekst" value={searchedTerm ?? ''} onChange={(e) => setSearchedTerm(e.target.value)}/>
             </div>
             <div className="confirmButton">
-                <button onClick={loadRecipes}>Szukaj</button>
+                <button onClick={loadRecipes}>{t.common.search}</button>
             </div>
         </div>
     )

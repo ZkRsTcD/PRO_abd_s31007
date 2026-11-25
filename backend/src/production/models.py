@@ -3,7 +3,7 @@ from typing import List
 
 class ProductionListItem(BaseModel):
     id: int
-    Machine_id: int
+    machine_code: str
     timestart: str
     worksorder: str
     partnum: str

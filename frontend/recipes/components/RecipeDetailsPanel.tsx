@@ -25,7 +25,7 @@ const RecipeDetailsPanel: React.FC<RecipeDetailsPanelProps> = ({
         <div className='recipeDetails'>
             <div className='detailsHeader'>
                 <label>{recipe.id}</label>
-                <label>{recipe.Machine_id}</label>
+                <label>{recipe.machine_code}</label>
                 <label>{recipe.name}</label>
                 <button onClick={onSave} style={{backgroundColor: '#295338'}}>Zapisz zmiany</button>
 

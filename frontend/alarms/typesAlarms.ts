@@ -1,6 +1,6 @@
 export interface AlarmRaport {
     id: number;
-    machine_code: number;
+    machine_code: string;
     timestart: string;
     fname: string;
     sname: string;

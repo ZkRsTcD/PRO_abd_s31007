@@ -5,7 +5,7 @@ from typing import Optional
 
 class RecipeListItem(BaseModel):
     id: int
-    Machine_id: int
+    machine_code: str
     timestart: datetime
     User_id: int
     name: str

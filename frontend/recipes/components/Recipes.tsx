@@ -3,6 +3,7 @@ import { useRecipes } from '../useRecipes'
 import RecipeTable from './RecipeTable'
 import RecipeDetailsPanel from './RecipeDetailsPanel'
 import RecipeSearchFilterPanel from './RecipeSearchFilterPanel'
+import { useLanguage } from "../../i18n/LanguageContext"; 
 
 const Recipes: React.FC = () => {
   const {
@@ -34,23 +35,23 @@ const Recipes: React.FC = () => {
     setPageSize
   } = useRecipes();
 
+  const { t } = useLanguage();
+
   return (
     <div className="recipeList">
       <h1>
         Receptury
       </h1>
       <div className="SearchFilterRecipePanel">
-        {!loading && !error && (
-          <RecipeSearchFilterPanel
-            fromDate={fromDate} 
-            toDate={toDate} 
-            searchedTerm={searchedTerm}
-            setFromDate={setFromDate}
-            setToDate={setToDate}
-            setSearchedTerm={setSearchedTerm}
-            loadRecipes={() => {setPage(1); loadRecipes(0, pageSize)}}
-            formatDateToString={formatDateToString}/>
-        )}
+        <RecipeSearchFilterPanel
+          fromDate={fromDate} 
+          toDate={toDate} 
+          searchedTerm={searchedTerm}
+          setFromDate={setFromDate}
+          setToDate={setToDate}
+          setSearchedTerm={setSearchedTerm}
+          loadRecipes={() => {setPage(1); loadRecipes(0, pageSize)}}
+          formatDateToString={formatDateToString}/>
       </div>
       <div className="PaginationPanel">
         <button name="GoBack" onClick={() => handlePagination(false)} disabled={page === 1 || loading}>{'<<'}</button>
@@ -64,7 +65,7 @@ const Recipes: React.FC = () => {
         <button name="GoForward" onClick={() => handlePagination(true)} disabled={!hasMore || loading}>{'>>'}</button>
       </div>
       <div className="RecipeTable">
-        {loading && <p>Trwa pobieranie danych z bazy...</p>}
+        {loading && <p>{t.common.loading}</p>}
         {error && <p>Błąd połączenia: {error}</p>}
         {!loading && !error && (
           <RecipeTable recipes={recipes} onSelect={openDetails}/>

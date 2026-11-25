@@ -3,7 +3,7 @@ from typing import List
 
 class AlarmListItem(BaseModel):
     id: int
-    machine_code: int
+    machine_code: str
     timestart: str
     fname: str
     sname: str

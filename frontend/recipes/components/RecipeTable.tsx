@@ -29,7 +29,7 @@ const RecipeTable: React.FC<RecipeTableProps> = ({ recipes, onSelect }) => {
                     recipes.map(recipe => (
                     <tr key={recipe.id}>
                         <td>{recipe.id}</td>
-                        <td>{recipe.Machine_id}</td>
+                        <td>{recipe.machine_code}</td>
                         <td>{new Date(recipe.timestart).toLocaleString('pl-PL')}</td>
                         <td>{recipe.fname} {recipe.sname}</td>
                         <td>{recipe.name}</td>
